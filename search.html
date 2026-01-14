@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Search - BP MODELS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 2.8rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        header h1 a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .btn {
+            color: #fff;
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            transition: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+
+        .btn:hover::after {
+            width: 100%;
+        }
+
+        .search-container {
+            margin-top: 150px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .model-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .model-profile img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .model-profile h2 {
+            font-size: 2rem;
+            margin: 0;
+            color: #000;
+        }
+
+        .instagram-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .instagram-icon:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+
+        .instagram-icon a {
+            display: inline-flex;
+            align-items: center;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .instagram-icon img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .back-button {
+            margin-top: 2rem;
+            padding: 0.5rem 1.5rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .back-button:hover {
+            opacity: 0.8;
+        }
+
+        .not-found {
+            font-size: 1.5rem;
+            color: #000;
+            margin: 2rem;
+        }
+
+        footer {
+            background: #000;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-content a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            transition: opacity 0.3s;
+        }
+
+        .footer-content a:hover {
+            opacity: 0.6;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #000;
+            border: 1px solid #fff;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .search-suggestions div {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.75rem;
+        }
+
+        .search-suggestions div:hover {
+            background: #333;
+        }
+
+        .search-input {
+            padding: 0.5rem 0.9rem;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            width: 200px;
+            position: relative;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 1.5rem;
+            }
+
+            .footer-content {
+                gap: 1rem;
+            }
+
+            .footer-content a {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.5rem 1rem;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .search-container {
+                margin-top: 100px;
+                padding: 1rem;
+            }
+
+            .model-profile img {
+                max-width: 300px;
+            }
+
+            .model-profile h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">BP MODELS</a></h1>
+        <div class="nav-buttons">
+            <div style="position: relative;">
+                <input type="text" class="search-input" placeholder="Search..." id="searchInput">
+                <div id="searchSuggestions" class="search-suggestions"></div>
+            </div>
+            <a href="modele.html" class="btn">Modele</a>
+            <a href="contact.html" class="btn">Contact</a>
+        </div>
+    </header>
+
+    <div class="search-container" id="searchContainer">
+        <div class="not-found">Searching...</div>
+    </div>
+
+    <div id="modelGalleryModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center;">
+        <button onclick="closeModelGallery()" style="position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; z-index: 1001;">×</button>
+        <button onclick="prevModelImage()" style="position: absolute; left: 2rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fff; font-size: 3rem; cursor: pointer;">‹</button>
+        <img id="galleryImage" src="" alt="Gallery" style="max-width: 90%; max-height: 90%; object-fit: contain;">
+        <button onclick="nextModelImage()" style="position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fff; font-size: 3rem; cursor: pointer;">›</button>
+        <div style="position: absolute; bottom: 1rem; color: #fff; font-family: 'Orbitron', sans-serif;">
+            <span id="imageCounter">1 / 1</span>
+        </div>
+    </div>
+
+    <script>
+        // Model galleries from modele.html
+        const modelGalleries = {
+            'Adrianna Bach': ['adrianna.jpg', 'adrianna1.jpg', 'adrianna2.jpg', 'adrianna3.jpg', 'adrianna4.jpg'],
+            'Alton Mason': ['alton.jpg', 'alton1.jpg', 'alton2.jpg', 'alton3.jpg', 'alton4.jpg', 'alton5.jpg', 'alton6.jpg', 'alton7.jpg', 'alton8.jpg'],
+            'Hailey Bieber': ['hailey.jpg', 'hailey1.jpg', 'hailey2.jpg', 'hailey3.jpg', 'hailey4.jpg', 'hailey5.jpg', 'hailey6.jpg', 'hailey7.jpg', 'hailey8.jpg', 'hailey9.jpg', 'hailey10.jpg'],
+            'He Cong': ['he.jpg', 'he1.jpg', 'he2.jpg', 'he3.jpg', 'he4.jpg', 'he5.jpg', 'he6.jpg', 'he7.jpg', 'he8.jpg', 'he9.jpg', 'he10.jpg'],
+            'Aleksandar Rusic': ['aleks.jpg', 'aleks1.jpg', 'aleks2.jpg', 'aleks3.jpg', 'aleks4.jpg', 'aleks5.jpg', 'aleks6.jpg', 'aleks7.jpg', 'aleks8.jpg'],
+            'Andres Velencoso': ['andres.jpg', 'andres1.jpg', 'andres2.jpg', 'andres3.jpg', 'andres4.jpg', 'andres5.jpg', 'andres6.jpg', 'andres7.jpg', 'andres8.jpg', 'andres9.jpg', 'andres10.jpg', 'andres11.jpg'],
+            'Ari Fournier': ['ari.jpg', 'ari1.jpg', 'ari2.jpg', 'ari3.jpg', 'ari4.jpg', 'ari5.jpg', 'ari6.jpg', 'ari7.jpg', 'ari8.jpg', 'ari9.jpg', 'ari10.jpg'],
+            'Ben Bowers': ['ben.jpg', 'ben1.jpg', 'ben2.jpg', 'ben3.jpg', 'ben4.jpg', 'ben5.jpg', 'ben6.jpg', 'ben7.jpg', 'ben8.jpg', 'ben9.jpg', 'ben10.jpg'],
+            'Carla Rey': ['carla.jpg', 'carla1.jpg', 'carla2.jpg', 'carla3.jpg', 'carla4.jpg', 'carla5.jpg', 'carla6.jpg', 'carla7.jpg'],
+            'Jordan Barrett': ['jordan.jpg', 'jordan2.jpg', 'jordan3.jpg', 'jordan4.jpg', 'jordan5.jpg', 'jordan6.jpg', 'jordan7.jpg', 'jordan8.jpg', 'jordan9.jpg', 'jordan10.jpg', 'jordan11.jpg'],
+            'Robert Pattinson': ['robert1.jpg', 'robert2.jpg', 'robert3.jpg', 'robert4.jpg', 'robert5.jpg'],
+            'Amy Wesson': ['amyprof.jpg','amy1.jpg','amy2.jpg','amy3.jpg','amy4.jpg','amy5.jpg','amy6.jpg'],
+            'Leon Dame': ['leon1.jpg','leon2.jpg','leon3.jpg','leon4.jpg','leon5.jpg','leon6.jpg'],
+            'Madonna Louise Ciccone': ['madonaprof.jpg','madona1.jpg','madona2.jpg','madona3.jpg','madona4.jpg','madona5.jpg','madona6.jpg','madona7.jpg'],
+            'Christy Turlington': ['christyprof.jpg','christy1.jpg','christy2.jpg','christy3.jpg','christy4.jpg','christy5.jpg','christy6.jpg'],
+            'Linda Evangelista': ['lindaprof.jpg','linda1.jpg','linda2.jpg','linda3.jpg','linda4.jpg','linda5.jpg','linda6.jpg','linda7.jpg'],
+            'Stephanie Seymour': ['stephanieprof.jpg','stephanie1.jpg','stephanie2.jpg','stephanie3.jpg','stephanie4.jpg','stephanie5.jpg','stephanie6.jpg'],
+            'Stella Tennant': ['stellaprof.jpg','stella1.jpg','stella2.jpg','stella3.jpg','stella4.jpg','stella5.jpg','stella6.jpg'],
+            'Sang Gun': ['sang.jpg','sang1.jpg','sang2.jpg','sang3.jpg','sang4.jpg','sang5.jpg','sang6.jpg','sang7.jpg','sang8.jpg'],
+            'TJ Sawyerr': ['tj.jpg','tj2.jpg','tj3.jpg','tj4.jpg','tj5.jpg','tj6.jpg','tj7.jpg'],
+            'Wisdom Kaye': ['wis.jpg','wis1.jpg','wis2.jpg','wis3.jpg','wis4.jpg','wis5.jpg','wis6.jpg','wis7.jpg','wis8.jpg'],
+            'Wiz Khalifa': ['wiz.jpg','wiz1.jpg','wiz2.jpg','wiz3.jpg','wiz4.jpg','wiz5.jpg','wiz6.jpg','wiz7.jpg'],
+            'Nick Mayhugh': ['nick.jpg','nick1.jpg','nick2.jpg','nick3.jpg','nick4.jpg','nick5.jpg'],
+            'Tyson Beckford': ['tyson1.jpg','tyson2.jpg','tyson3.jpg','tyson4.jpg','tyson5.jpg','tyson6.jpg','tyson7.jpg'],
+            'David Gandy': ['gandy1.jpg','gandy2.jpg','gandy3.jpg','gandy4.jpg','gandy5.jpg','gandy6.jpg','gandy7.jpg'],
+            'Sean O\'Pry': ['sean1.jpg','sean2.jpg','sean3.jpg','sean4.jpg','sean5.jpg','sean6.jpg','sean7.jpg'],
+            'Marcus Schenkenberg': ['marcusprof.jpg','marcus1.jpg','marcus2.jpg','marcus3.jpg','marcus4.jpg','marcus5.jpg','marcus6.jpg'],
+            'Miranda Kerr': ['mirindaprof.jpg','mirinda.jpg','mirinda1.jpg','mirinda2.jpg','mirinda3.jpg','mirinda4.jpg','mirinda5.jpg','mirinda6.jpg','mirinda7.jpg'],
+            'Camila Morrone': ['camilaprof.jpg','camila.jpg','camila1.jpg','camila2.jpg','camila3.jpg','camila4.jpg','camila5.jpg','camila6.jpg','camila7.jpg','camila8.jpg','camila9.jpg'],
+            'Boo Johnson': ['booprof.jpg','boo.jpg','boo1.jpg','boo2.jpg','boo3.jpg','boo4.jpg','boo5.jpg','boo6.jpg','boo7.jpg','boo8.jpg','boo9.jpg'],
+            'Elsa Hosk': ['elsaprof.jpg','elsa.jpg','elsa1.jpg','elsa2.jpg','elsa3.jpg','elsa4.jpg','elsa5.jpg','elsa6.jpg','elsa7.jpg','elsa8.jpg','elsa9.jpg'],
+            'Alex Consani': ['alexprof.jpg','alex.jpg','alex1.jpg','alex2.jpg','alex4.jpg','alex5.jpg','alex6.jpg','alex7.jpg','alex8.jpg','alex9.jpg','alex10.jpg']
+        };
+
+        // Instagram URLs
+        const instagramLinks = {
+            'Adrianna Bach': 'https://www.instagram.com/adriannabach/',
+            'Alton Mason': 'https://www.instagram.com/altonmason/',
+            'Hailey Bieber': 'https://www.instagram.com/haileybieber/',
+            'He Cong': 'https://www.instagram.com/heconghc/',
+            'Aleksandar Rusic': 'https://www.instagram.com/aleksandar_rusic/',
+            'Andres Velencoso': 'https://www.instagram.com/andresvelencoso/',
+            'Ari Fournier': 'https://www.instagram.com/ariloufournier/',
+            'Ben Bowers': 'https://www.instagram.com/benkbowers/',
+            'Carla Rey': 'https://www.instagram.com/rey_carly/',
+            'Jordan Barrett': 'https://www.instagram.com/iblamejordan/',
+            'Amy Wesson': 'https://www.instagram.com/therealamywesson/',
+            'Leon Dame': 'https://www.instagram.com/leondame/',
+            'Madonna Louise Ciccone': 'https://www.instagram.com/madonna/',
+            'Christy Turlington': 'https://www.instagram.com/cturlington/',
+            'Linda Evangelista': 'https://www.instagram.com/lindaevangelista/',
+            'Stephanie Seymour': 'https://www.instagram.com/stephanieseymour/',
+            'Stella Tennant': 'https://www.instagram.com/stellatennant/?hl=ro',
+            'Sang Gun': 'https://www.instagram.com/2_sanggun/',
+            'TJ Sawyerr': 'https://www.instagram.com/tj.saw1/',
+            'Wisdom Kaye': 'https://www.instagram.com/wisdm/',
+            'Wiz Khalifa': 'https://www.instagram.com/wizkhalifa/',
+            'Nick Mayhugh': 'https://www.instagram.com/nickmayhugh/',
+            'Robert Pattinson': 'https://www.instagram.com/robpattinsondougls/',
+            'Tyson Beckford': 'https://www.instagram.com/tysoncbeckford/',
+            'David Gandy': 'https://www.instagram.com/davidgandy_official/',
+            'Sean O\'Pry': 'https://www.instagram.com/seanopry55/',
+            'Marcus Schenkenberg': 'https://www.instagram.com/marcusschenkenberg/',
+            'Miranda Kerr': 'https://www.instagram.com/mirandakerr/',
+            'Camila Morrone': 'https://www.instagram.com/camilamorrone/',
+            'Boo Johnson': 'https://www.instagram.com/boojohnson/',
+            'Elsa Hosk': 'https://www.instagram.com/hoskelsa/',
+            'Alex Consani': 'https://www.instagram.com/alexconsani/'
+        };
+
+        // TikTok URLs
+        const tiktokLinks = {
+            'Wisdom Kaye': 'https://www.tiktok.com/@wisdm8',
+            'Alex Consani': 'https://www.tiktok.com/@ms.mawma'
+        };
+
+        // TikTok followers
+        const tiktokFollowers = {
+            'Wisdom Kaye': '13.9M',
+            'Alex Consani': '1.9M'
+        };
+
+        // Instagram followers (update manually as needed)
+        const instagramFollowers = {
+            'Adrianna Bach': '39.8K',
+            'Alton Mason': '2.5M',
+            'Hailey Bieber': '55.5M',
+            'He Cong': '200K',
+            'Aleksandar Rusic': '52.5K',
+            'Andres Velencoso': '590.4K',
+            'Ari Fournier': '244.4K',
+            'Ben Bowers': '113.4K',
+            'Carla Rey': '7.1K',
+            'Jordan Barrett': '4.2M',
+            'Amy Wesson': '1.2K',
+            'Leon Dame': '238K',
+            'Madonna Louise Ciccone': '20.2M',
+            'Christy Turlington': '1.5M',
+            'Linda Evangelista': '1.5M',
+            'Stephanie Seymour': '262K',
+            'Stella Tennant': '14K',
+            'Sang Gun': '12.3K',
+            'TJ Sawyerr': '27.3K',
+            'Wisdom Kaye': '7.7M',
+            'Wiz Khalifa': '29.7M',
+            'Nick Mayhugh': '148K',
+            'Robert Pattinson': '311K',
+            'Tyson Beckford':'719K',
+            'David Gandy': '1M',
+            'Sean O\'Pry': '774K',
+            'Marcus Schenkenberg': '33.1K',
+            'Miranda Kerr': '14.3M',
+            'Camila Morrone': '5M',
+            'Boo Johnson': '639K',
+            'Elsa Hosk': '8.5M',
+            'Alex Consani': '4.2M'
+        };
+
+        // Model heights (cm / feet)
+        const modelHeights = {
+            'Adrianna Bach': '175 cm / 5\'9"',
+            'Alton Mason': '188 cm / 6\'2"',
+            'Andres Velencoso': '188 cm / 6\'2"',
+            'Ari Fournier': '175 cm / 5\'9"',
+            'Ben Bowers': '185 cm / 6\'1"',
+            'Carla Rey': '178 cm / 5\'10"',
+            'He Cong': '178 cm / 5\'10"',
+            'Hailey Bieber': '173 cm / 5\'8"',
+            'Aleksandar Rusic': '188 cm / 6\'2"',
+            'Jordan Barrett': '188 cm / 6\'2"',
+            'Amy Wesson': '178 cm / 5\'10"',
+            'Madonna Louise Ciccone': '165 cm / 5\'5"',
+            'Christy Turlington': '178 cm / 5\'10"',
+            'Linda Evangelista': '178 cm / 5\'10"',
+            'Stephanie Seymour': '178 cm / 5\'10"',
+            'Stella Tennant': '180 cm / 5\'11"',
+            'Sang Gun': '185 cm / 6\'1"',
+            'TJ Sawyerr': '184 cm / 6\'0"',
+            'Wisdom Kaye': '193 cm / 6\'4"',
+            'Wiz Khalifa': '193 cm / 6\'4"',
+            'Nick Mayhugh': '183 cm / 6\'0"',
+            'Leon Dame': '188 cm / 6\'1"',
+            'Robert Pattinson': '185 cm / 6\'1"',
+            'Tyson Beckford': '183 cm / 6\'0"',
+            'David Gandy': '191 cm / 6\'3"',
+            'Sean O\'Pry': '185 cm / 6\'1"',
+            'Marcus Schenkenberg': '193 cm / 6\'4"',
+            'Miranda Kerr': '175 cm / 5\'9"',
+            'Camila Morrone': '175 cm / 5\'9"',
+            'Boo Johnson': '180 cm / 5\'11"',
+            'Elsa Hosk': '176 cm / 5\'9"',
+            'Alex Consani': '183 cm / 6\'0"'
+        };
+        // Model descriptions
+        const modelDescriptions = {
+            'Adrianna Bach': 'Adrianna Bach este o model, mamă și o voce de încredere în spațiul wellness. Cunoscută pentru autenticitatea ei fundamentată, Adrianna a cultivat o comunitate în creștere inspirată de abordarea sa sinceră a maternității, bunăstării și vieții consacrate.\n\nO nativă din New York City și absolventă NYU Gallatin, ea și-a proiectat propria specializare interdisciplinară în psihologie și afaceri – o fundație care reflectă curiozitatea sa despre comportamentul uman și instinctul său pentru povestit gânditor. Acest fundal unic continuă să informeze atât munca sa în fața camerei, cât și capacitatea sa de a se conecta cu publicul într-un mod semnificativ.\n\nCa model internațional reprezentată de IMG, Adrianna a colaborat cu unele dintre cele mai respectate case de modă și mărci de stil de viață din lume. O față recurentă și muza pentru Ralph Lauren, ea a condus mai multe campanii Lauren Ralph Lauren și Ralph Lauren Home în sezonele recent trecute. Portofoliul ei include, de asemenea, lucrări cu Brunello Cucinelli, Max Mara, STAUD și Bloomingdale\'s.\n\nÎn 2024, Adrianna și-a primit fiica, Stella Rose. În loc să ascundă dificultățile noii maternități, ea a împărțit în mod curajos propria experiență cu anxietatea și depresiunea postpartum – transformând vulnerabilitatea în activism. Deschiderea sa a poziționat-o ca o voce de frunte în sănătatea mentală maternă.\n\nAdrianna aduce același sentiment de intenție pe care îl aplică wellness-ului în viața sa de acasă. Pasionată de design, ea găsește plăcere în crearea spațiilor calde și armonioase. O advocate devotată pentru animale, Adrianna sprijină cauze care beneficiază câini și cai prin muncă voluntară și inițiative de strângere de fonduri.\n\nPrin platforma sa, Adrianna încurajează comunitatea și conversația în care vulnerabilitatea se întâlnește cu puterea – și unde wellness-ul real este definit nu de perfecțiune, ci de prezență, compasiune și conexiune.',
+            'Alton Mason': 'Modelul american Alton Mason provine din umilă origine ca cel mai mare copil dintre patru în Midwest, unde și-a găsit pasiunea și puterea în dans și artă. Când avea 17 ani, s-a mutat la Los Angeles pentru a studia dans și teatru la American Musical and Dramatic Academy.\n\nPrin coreograful celebru Laurieann Gibson, Mason a fost curând distribuit ca dansator pentru P Diddy la BET Awards, câștigând rapid atenție pentru aspectul său unic. Puțin timp după, a fost distribuit pentru primul lui show de modă prin Instagram și a mers în show-ul Yeezy Season 3 al lui Kanye West.\n\nDe atunci, Mason a mers în diverse fashion show-uri din întreaga lume și a fost prezentat în campanii majore pentru mărci inclusiv Hugo Boss, parfumul Paco Rabanne, Tom Ford, Fendi, Louis Vuitton și Off-White, pentru a numi doar câteva.\n\nUnul dintre cele mai memorabile momente din cariera sa a fost atunci când a făcut istorie devenind primul model masculin negru care a mers pentru casa de modă de top Chanel. Realizarea sa reprezintă nu doar un punct de cotitură în industria modei, ci și o declarație puternică despre reprezentare și diversitate în lumea fashion-ului global.',
+            'Hailey Bieber': 'Hailey Bieber este o model și antreprenoare care s-a impus rapid ca una dintre cele mai căutate personalități ale generației sale. Ea a defilat pentru designeri de top precum Elie Saab, Dolce & Gabbana, Tory Burch, Prabal Gurung, Zadig și Voltaire, Sonia Rykiel, Off-White, Missoni și Jeremy Scott.\n\nHailey a apărut în Vogue și în numeroasele sale ediții internaționale, W, Wonderland, i-D, V, GQ și Interview. A fost prezentă pe coperta unor reviste prestigioase precum Marie Claire, ELLE, LOVE și Harper\'s Bazaar, lucrand cu fotografi aclamați inclusiv Mario Testino, Willy Vanderpere, Santiago și Mauricio, Cass Bird și Karl Lagerfeld.\n\nCa model, Baldwin a apărut în campanii pentru mărci de lux și internaționale precum Tommy Hilfiger, L\'Oréal, Karl Lagerfeld, YSL Beauty, Victoria\'s Secret, Calvin Klein, Carolina Herrera 212 Fragrance și Guess.\n\nPe lângă munca sa de model, Hailey este fondatoare și fața Rhode Beauty, o linie de îngrijire a pielii care a câștigat rapid apreciere pentru produsele sale inovatoare și accesibile. Cu peste 50 de milioane de urmăritori pe rețelele de socializare, ea exercită o influență semnificativă asupra trendurilor și culturii pop.\n\nÎn afara modelingului și afacerilor, Hailey este o fostă balerină și îi place să participe la reprezentații ale New York City Ballet și American Ballet Theatre. Ea echilibrează în mod exemplar cariera sa intensă cu viața personală și interesele artistice.',
+            'Ari Fournier': 'Ari Fournier este o model și personalitate de pe rețelele sociale cu un apel cameleon. Indiferent dacă alege un look ușor elegant și francez cu breton fin și moale sau sport un bob blond-gheață în stil California cool, fiica nativă din Montreal atrage cu siguranță atenția. Fournier a fost featured în campanii pentru Aldo, Chantecaille și ICONE, și a fost fotografiată de Daniel Yoon pentru Camila Coelho x Revolve.\n\nÎn 2024, ea a defila în show-ul Tiffany & Co Blue Book alături de modele precum Hilary Rhoda, Mahi Kabra, Jacquelyn Jablonski și alții. De asemenea, ea are o prezență robustă pe rețelele de socializare, unde le oferă fanilor o privire în munca sa, călătorii și momente din culise.\n\nStilul ei versatil și abordarea autentică au făcut-o o figură preferată în industria modei și pe rețelele de socializare. Ari continuă să inspire și să surprindă cu transformările sale creative și cu prezența ei dinamică atât pe cărări cât și online.',
+            'TJ Sawyerr': 'TJ Sawyerr este un creativ multi-talentat din noua generație din Londra, concentrat pe povestirea culturală prin direcție creativă, realizare de imagini și jurnalism conversațional. Născut în Africa de Sud dintr-un tată ghanez-american și o mamă britanică-caraibană, tânărul de 22 de ani se inspiră din moștenirea și experiențele sale diverse pentru a-și informa și modela munca.\n\nAcest fundal îi ghidează, de asemenea, abordarea colaborativă, cu un accent puternic pe narațiunile centrate pe comunitatea Black prin proiecte conduse atât de talente, cât și de brand-uri, evoluând dintr-un debut timpuriu în modelling.\n\nAcest focus, împerecheat cu carisma sa unică și talentul pentru relații cu talentele, a condus la oportunități de colaborare globale cu personalități precum A$AP Rocky, André 3000, Skepta și Bukayo Saka, precum și cu mărci majore precum Google, Adidas, Converse și Calvin Klein, toate acestea într-o etapă încă timpurie a carierei sale.',
+            'Wisdom Kaye': 'Wisdom Kaye, o iconiță de modă nigerian-americană, a luat cu asalt lumea social media cu stilul său impecabil și conținutul captivant. Supranumit „cel mai bine îmbrăcat tip de pe TikTok" de revista Vogue, tânărul de 24 de ani a strâns peste 20 de milioane de urmăritori pe platformele sale, devenind un creator căutat și un pionier al stilului Generației Z. Originar din Houston, Texas, și acum stabilit în New York City, Wisdom redefinește moda masculină cu abordarea sa proaspătă și unică, provocând hipermasculinitatea printr-o lentilă comică.\n\nWisdom a devenit favoritul mărcilor de lux de top precum Prada, Dior, Valentino, Fendi, Ralph Lauren și Tiffany, precum și al gigantilor comerciali precum Google, Sony, Samsung, BMW și Amazon. A condus campanii majore pentru Coach și Ami Paris, lucrând cu fotografi renumiți precum Juergen Teller, Tyler Mitchell și Sam Rock. În plus, a defilat pentru Balmain, Peter Do și show-ul de modă amfAR al lui Carine Roitfeld în sprijinul cercetării SIDA.\n\nCu un ochi unic pentru design, o personalitate magnetică și sprijinul celor mai buni creativi din modă, Wisdom Kaye continuă să remodeleze peisajul modei, consolidându-și statutul de iconiță globală de stil și pionier cultural.',
+            'Miranda Kerr': 'Miranda Kerr este un supermodel australian, antreprenoare și fondatoarea brandului de îngrijire organică a pielii KORA Organics. Născută pe 20 aprilie 1983 în Sydney, Australia, Miranda a început cariera de modeling la vârsta de 13 ani, câștigând competiția „Dolly Magazine Model Search" în 1997.\n\nCariera ei internațională a decolat când a devenit primul model australian Victoria\'s Secret Angel în 2007, poziție pe care a deținut-o până în 2013. Miranda a defilat pentru cele mai prestigioase case de modă din lume, inclusiv Chanel, Dior, Prada, Balenciaga și Versace, și a apărut pe coperțile revistelor Vogue, Harper\'s Bazaar, ELLE și Rolling Stone.\n\nPe lângă munca sa de model, Miranda este o antreprenoare de succes. În 2009, a fondat KORA Organics, o linie de îngrijire a pielii certificată organic, care reflectă pasiunea ei pentru wellness și sănătate holistică. De asemenea, a lansat mai multe cărți despre wellness și auto-îngrijire.\n\nCu peste 18 milioane de urmăritori pe Instagram, Miranda continuă să fie o influență majoră în industria modei și wellness-ului. Este căsătorită cu co-fondatorul Snapchat, Evan Spiegel, și este mamă a trei copii. Filosofia ei de viață se centrează pe echilibru, sănătate și frumusețe naturală.',
+            'Camila Morrone': 'Camila Morrone este o actriță și model argentinian-americană care a cucerit industria modei și cinematografiei cu talentul și grația sa naturală. Născută pe 16 iunie 1997 în Los Angeles, California, Camila a crescut într-o familie cu legături puternice în lumea divertismentului - mama sa, Lucila Solá, este o actriță argentiniană cunoscută.\n\nCariera sa de modeling a decolat rapid, lucrând cu branduri de lux precum Moschino, Victoria\'s Secret și Topshop. A apărut pe copertile unor reviste prestigioase inclusiv Vogue Turkey, ELLE și Vanity Fair, consolidându-și poziția ca una dintre cele mai căutate fețe din industrie.\n\nPe lângă modeling, Camila și-a urmărit pasiunea pentru actorie, debutând în filmul "Bukowski" (2013). A continuat cu roluri notabile în "Death Wish" (2018) alături de Bruce Willis și "Mickey and the Bear" (2019), pentru care a primit laude critice pentru interpretarea sa. În 2022, a jucat în filmul psihologic "Daisy Jones & The Six", demonstrându-și versatilitatea ca actriță.\n\nCu peste 3 milioane de urmăritori pe Instagram, Camila Morrone continuă să impresioneze atât ca model cât și ca actriță, fiind o voce proaspătă și autentică pentru generația sa.',
+            'Boo Johnson': 'Boo Johnson este un skateboarder profesionist și model cunoscut pentru stilul său unic și prezența carismatică atât pe placă cât și în fața camerei. Născut pe 14 ianuarie 1988 în Oklahoma City, Oklahoma, Boo a început să practice skateboarding-ul de la o vârstă fragedă, rapid devând un nume respectat în comunitatea skate.\n\nCa skateboarder profesionist, Johnson a reprezentat branduri majore din industrie precum Toy Machine, Adidas Skateboarding și Spitfire Wheels. Stilul său distinctiv de skateboarding și personalitatea autentică l-au făcut un favorit printre fani și colegii săi de boardă.\n\nTranziția lui Boo în lumea modelingului a fost naturală, aducând aceeași energie și autenticitate care l-au definit ca skateboarder. A lucrat cu multiple branduri de streetwear și mode, iar lookul său distinctiv și attitudinea relaxată au devenit caracteristici definitorii.\n\nCu o comunitate dedicată de urmăritori pe social media, Boo Johnson continuă să inspire atât prin skateboarding cât și prin munca sa de modeling, reprezentând o punte între cultura skate și lumea modei contemporane.',
+            'Elsa Hosk': 'Elsa Hosk este un supermodel suedez, creator de conținut, antreprenoare, creativă și mamă. A început să practice modelingul la vârsta de cincisprezece ani, dar ani de zile a combinat cariera de modeling cu o carieră profesionistă în baschet. Hosk și-a făcut debutul pe podium în sezonul primăvară 2012, defilând pentru Christian Dior, Giambattista Valli, Carolina Herrera, Oscar de la Renta, Acne Jeans și Joseph Altuzarra.\n\nEste o superstar editorială, apărând pe nenumărate coperți și în articole speciale; a apărut în cinci campanii publicitare consecutive pentru Guess, fotografiată de Ellen von Unwerth; și a fost imaginea campaniilor pentru CoverGirl, Barneys New York, Free People, H&M și Vichy.\n\nȘi-a lansat propria etichetă de modă, HELSA, în 2022 și în prezent ocupă rolul de director creativ de campanie și designer. Hosk este, de asemenea, o filantropă dedicată și implicată activ cu Fair Girls, o organizație dedicată ajutorării tinerelor femei să scape de traficul de persoane.\n\nCu peste 8 milioane de urmăritori pe Instagram, Elsa Hosk continuă să inspire prin munca sa diversă, dedicarea pentru modă și angajamentul față de cauzele sociale importante.',
+            'Alex Consani': 'Alex Consani a apărut pe scenă în 2015 la vârsta de 12 ani și a fost o jucătoare majoră de atunci, defilând pentru Tom Ford, Chanel, Versace, Stella McCartney, Alexander McQueen, printre altele. Până în 2021, ea se afla pe lista GLAAD\'s 20 Under 20, iar în 2023 a fost prezentată în "The Tour \'23" al Victoria\'s Secret. A fost fața campaniilor publicitare pentru Marc Jacobs, Jacquemus, Jean Paul Gaultier și multe altele, iar în 2024 a apărut în videoclipul muzical "360" al lui Charli XCX. Are milioane de urmăritori pe TikTok și a făcut senzație atât pe podium cât și în afara acestuia. Dar impactul ei depășește cu mult moda. În decembrie 2024, Consani a fost numită Modelul Anului la Premiile Anuale de Modă din Marea Britanie. Consani intră în istorie ca prima femeie transgender care primește acest premiu, o dovadă suplimentară a impactului și influenței sale asupra zeitgeist-ului de astăzi.'
+        };
+        let currentGalleryIndex = 0;
+        let currentGalleryImages = [];
+        let currentModelName = '';
+
+        // Use localStorage instead of sessionStorage to persist after refresh
+        const searchModel = localStorage.getItem('searchModel');
+        const modelProfile = localStorage.getItem('modelProfile');
+        const container = document.getElementById('searchContainer');
+
+        if (searchModel && modelProfile) {
+            currentModelName = searchModel;
+            const allImages = modelGalleries[searchModel] || [];
+            // Remove profilul din galerie pentru a evita duplicarea imaginii principale
+            currentGalleryImages = allImages.filter(img => img !== modelProfile);
+            // Păstrează galeria originală dacă filtrarea ar goli lista
+            if (currentGalleryImages.length === 0) {
+                currentGalleryImages = allImages;
+            }
+            const instagramUrl = instagramLinks[searchModel] || '#';
+            const followers = instagramFollowers[searchModel] || '0';
+            const height = modelHeights[searchModel] || 'N/A';
+            const description = modelDescriptions[searchModel] || '';
+
+            let profileImg = modelProfile;
+            if (searchModel === 'Marcus Schenkenberg') {
+                profileImg = 'marcusprof.jpg';
+            }
+
+            let descriptionHTML = '';
+            if (description) {
+                descriptionHTML = `<div style="margin-top: 2rem; max-width: 900px; line-height: 1.8; color: #333; font-size: 0.95rem; white-space: pre-wrap; text-align: justify; padding: 0 2rem;">${description}</div>`;
+            }
+
+            const tiktokUrl = tiktokLinks[searchModel] || '';
+            const tiktokFollowerCount = tiktokFollowers[searchModel] || '';
+            let tiktokHTML = '';
+            if (tiktokUrl) {
+                tiktokHTML = `
+                    <div class="instagram-icon" style="margin-top: 1rem; margin-left: 1rem;">
+                        <a href="${tiktokUrl}" target="_blank"><img src="src/tiktok-icon.svg" alt="TikTok" style="width: 40px; height: 40px;"></a>
+                        <span style="margin-left: 0.5rem; color: #000; font-size: 0.9rem; font-weight: bold;">${tiktokFollowerCount}</span>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="model-profile" style="display: flex; flex-direction: column; align-items: center;">
+                    <h2>${searchModel}</h2>
+                    <img src="src/poze/${profileImg}" alt="${searchModel}" onclick="openModelGallery()" style="cursor: pointer; max-width: 500px; width: 100%; object-fit: cover;">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <div class="instagram-icon" style="margin-top: 1rem;">
+                            <a href="${instagramUrl}" target="_blank"><img src="src/instagram-icon.svg" alt="Instagram"></a>
+                            <span style="margin-left: 0.5rem; color: #000; font-size: 0.9rem; font-weight: bold;">${followers}</span>
+                        </div>
+                        ${tiktokHTML}
+                    </div>
+                    <div style="margin-top: 0.5rem; color: #666; font-size: 0.85rem; font-weight: 500;">${height}</div>
+                    ${descriptionHTML}
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="not-found">
+                    <p>Model not found!</p>
+                </div>
+            `;
+        }
+
+        function openModelGallery() {
+            if (currentGalleryImages.length === 0) return;
+            currentGalleryIndex = 0;
+            document.getElementById('modelGalleryModal').style.display = 'flex';
+            showGalleryImage();
+        }
+
+        function closeModelGallery() {
+            document.getElementById('modelGalleryModal').style.display = 'none';
+        }
+
+        function clearModel() {
+            localStorage.removeItem('searchModel');
+            localStorage.removeItem('modelProfile');
+            window.location.href = 'index.html';
+        }
+
+        const modelProfiles = {
+            'Adrianna Bach': 'adriannaprof.jpg',
+            'Alton Mason': 'altonprof.jpg',
+            'Hailey Bieber': 'haileyprof.jpg',
+            'He Cong': 'heprof.jpg',
+            'Aleksandar Rusic': 'aleksprof.jpg',
+            'Andres Velencoso': 'andresprof.jpg',
+            'Ari Fournier': 'ariprof.jpg',
+            'Ben Bowers': 'benprof.jpg',
+            'Amy Wesson': 'amyprof.jpg',
+            'Madonna Louise Ciccone': 'madonaprof.jpg',
+            'Christy Turlington': 'christyprof.jpg',
+            'Linda Evangelista': 'lindaprof.jpg',
+            'Stephanie Seymour': 'stephanieprof.jpg',
+            'Stella Tennant': 'stellaprof.jpg',
+            'Sang Gun': 'sangprof.jpg',
+            'Carla Rey': 'carlaprof.jpg',
+            'Jordan Barrett': 'jordanprof.jpg',
+            'Leon Dame': 'leonprof.jpg',
+            'Robert Pattinson': 'robertprof.jpg',
+            'Tyson Beckford': 'tysonprof.jpg',
+            'David Gandy': 'gandyprof.jpg',
+            'Sean O\'Pry': 'seanprof.jpg',
+            'Marcus Schenkenberg': 'marcusprof.jpg',
+            'Miranda Kerr': 'mirindaprof.jpg',
+            'Camila Morrone': 'camilaprof.jpg',
+            'Boo Johnson': 'booprof.jpg',
+            'Elsa Hosk': 'elsaprof.jpg',
+            'Alex Consani': 'alexprof.jpg',
+            'TJ Sawyerr': 'tjprof.jpg',
+            'Wisdom Kaye': 'wisprof.jpg',
+            'Wiz Khalifa': 'wizprof.jpg',
+            'Nick Mayhugh': 'nickprof.jpg'
+        };
+
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestionsDiv = document.getElementById('searchSuggestions');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = this.value.trim().toLowerCase();
+            const matches = Object.keys(modelProfiles).filter(name => {
+                const nameParts = name.toLowerCase().split(' ');
+                return nameParts.some(part => part.startsWith(searchTerm));
+            });
+
+            if (searchTerm.length > 0) {
+                searchSuggestionsDiv.style.display = 'block';
+                searchSuggestionsDiv.innerHTML = matches.map(modelName => {
+                    const isExactMatch = modelName.toLowerCase() === searchTerm;
+                    const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                    // Escape single quotes for JS string
+                    const safeModelName = modelName.replace(/'/g, "\\'");
+                    return `<div onclick=\"selectModel('${safeModelName}')\" style=\"color: #fff; ${style}\">${modelName}</div>`;
+                }).join('');
+            } else {
+                searchSuggestionsDiv.style.display = 'none';
+            }
+        });
+
+        function selectModel(modelName) {
+            localStorage.setItem('searchModel', modelName);
+            localStorage.setItem('modelProfile', modelProfiles[modelName]);
+            window.location.href = 'search.html';
+        }
+
+        searchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                searchSuggestionsDiv.style.display = 'none';
+            }, 200);
+        });
+
+        searchInput.addEventListener('focus', function() {
+            if (this.value.trim().length > 0) {
+                searchSuggestionsDiv.style.display = 'block';
+            }
+        });
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value.trim();
+                const modelList = Object.keys(modelProfiles);
+                
+                for (let modelName of modelList) {
+                    if (modelName.toLowerCase() === searchTerm.toLowerCase()) {
+                        selectModel(modelName);
+                        return;
+                    }
+                }
+            }
+        });
+
+        // Restore suggestions on focus when there's text
+        searchInput.addEventListener('focus', function() {
+            if (this.value.trim().length > 0) {
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            const clickedInput = searchInput && (searchInput === e.target || searchInput.contains(e.target));
+            const clickedSug = searchSuggestionsDiv && searchSuggestionsDiv.contains(e.target);
+            if (searchSuggestionsDiv && !clickedInput && !clickedSug) {
+                searchSuggestionsDiv.style.display = 'none';
+            }
+        });
+
+        function showGalleryImage() {
+            const image = document.getElementById('galleryImage');
+            image.src = `src/poze/${currentGalleryImages[currentGalleryIndex]}`;
+            document.getElementById('imageCounter').textContent = `${currentGalleryIndex + 1} / ${currentGalleryImages.length}`;
+        }
+
+        function nextModelImage() {
+            if (currentGalleryIndex < currentGalleryImages.length - 1) {
+                currentGalleryIndex++;
+                showGalleryImage();
+            }
+        }
+
+        function prevModelImage() {
+            if (currentGalleryIndex > 0) {
+                currentGalleryIndex--;
+                showGalleryImage();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('modelGalleryModal').style.display === 'flex') {
+                if (e.key === 'ArrowRight') nextModelImage();
+                if (e.key === 'ArrowLeft') prevModelImage();
+                if (e.key === 'Escape') closeModelGallery();
+            }
+        });
+    </script>
+
+    <footer>
+        <div class="footer-content">
+            <a href="about.html">Despre noi</a>
+            <a href="contact.html">Contact</a>
+            <a href="terms.html">Termeni de utilizare</a>
+            <a href="cookies.html">Politica cookie-uri</a>
+            <a href="https://www.instagram.com/1_bote/" target="_blank">Instagram</a>
+        </div>
+    </footer>
+</body>
+</html>

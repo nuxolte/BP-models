@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="40" height="40">
+  <!-- Outer rounded square -->
+  <rect x="38" y="38" width="180" height="180" rx="40" ry="40" fill="none" stroke="black" stroke-width="16"/>
+  
+  <!-- Inner circle -->
+  <circle cx="128" cy="128" r="40" fill="none" stroke="black" stroke-width="16"/>
+  
+  <!-- Small dot in top right -->
+  <circle cx="180" cy="76" r="12" fill="black"/>
+</svg>

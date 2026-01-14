@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>BP MODELS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+        }
+        
+        .desktop-img {
+            cursor: default;
+            pointer-events: none;
+        }
+        
+        .mobile-img {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .desktop-img[data-index="2"] {
+            object-position: center 30%;
+        }
+        
+        .hero-image.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 1);
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header.scrolled h1 {
+            font-size: 1.2rem;
+        }
+
+        header.scrolled h1 a {
+            color: #000;
+        }
+
+        header.scrolled .nav-buttons a,
+        header.scrolled .search-input {
+            color: #000;
+            border-color: #000;
+        }
+
+        header.scrolled .search-input::placeholder {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        header h1 {
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 2.8rem;
+            font-family: 'Orbitron', sans-serif;
+            transition: font-size 0.3s ease;
+        }
+        header h1 a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .header-subtitle {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 15;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .category-list {
+            position: absolute;
+            right: 2rem;
+            top: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 15;
+        }
+
+        .category-item {
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .category-item:hover {
+            color: rgba(255, 255, 255, 1);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        
+        .hero-model-link {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 25;
+            transition: opacity 0.3s ease;
+            display: none;
+        }
+        
+        .hero-model-link:hover {
+            opacity: 0.8;
+        }
+        
+        @media (min-width: 769px) {
+            .hero-model-link.desktop {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-model-link.mobile {
+                display: block;
+            }
+        }
+        
+        .hero-model-link.mobile-only {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-model-link.mobile-only {
+                display: block;
+            }
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            outline: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .btn {
+            padding: 0.5rem 0;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            font-weight: normal;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            transition: none;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+        .btn:hover::after {
+            width: 100%;
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: #000;
+            border: none;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 20;
+            font-family: 'Orbitron', sans-serif;
+            transition: opacity 0.3s;
+            padding: 0;
+            display: none !important;
+        }
+        
+        .nav-arrow:hover {
+            opacity: 0.7;
+        }
+        
+        .nav-arrow.left {
+            left: 2rem;
+        }
+        
+        .nav-arrow.right {
+            right: 2rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+        
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: #fff;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        
+        header.scrolled .mobile-menu-btn span {
+            background: #000;
+        }
+
+        .mobile-controls {
+            display: none;
+            gap: 0.2rem;
+            align-items: center;
+        }
+        
+        .search-icon-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.3rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            transition: left 0.3s;
+            z-index: 200;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        
+        .mobile-menu.active {
+            left: 0;
+        }
+        
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .mobile-menu h2 {
+            color: #fff;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .mobile-menu-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .mobile-menu-links input {
+            padding: 0.5rem;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .search-dropdown {
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 300px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            z-index: 150;
+            transition: top 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .search-dropdown.active {
+            top: 20px;
+        }
+        
+        .search-dropdown-header {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .search-dropdown input {
+            width: 85%;
+            padding: 0.6rem;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .fullscreen-overlay.active {
+            display: flex;
+        }
+        
+        .fullscreen-close {
+            background: none;
+            border: none;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 301;
+        }
+        
+        .model-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            z-index: 301;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .model-name:hover {
+            opacity: 0.7;
+        }
+        
+        .fullscreen-header {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 302;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        }
+        
+        .fullscreen-header.hidden {
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+        
+        .fullscreen-content {
+            display: flex;
+            width: 100%;
+            flex: 1;
+            padding: 2rem;
+            box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            padding: 2rem;
+            align-items: flex-start;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            opacity: 0.4;
+            filter: blur(1px);
+        }
+        
+        .thumbnail:hover {
+            border: 2px solid #000;
+            opacity: 0.7;
+            filter: blur(0);
+        }
+        
+        .thumbnail.active-thumb {
+            border: 3px solid #000;
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(0.95);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .main-image-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .main-fullscreen-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .image-nav-area {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: none; /* Hide navigation areas on desktop */
+        }
+        
+        .image-nav-area.left {
+            left: 0;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46"><text x="12" y="35" font-size="35">←</text></svg>'), auto;
+        }
+        
+        .image-nav-area.right {
+            right: 0;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46"><text x="6" y="35" font-size="35">→</text></svg>'), auto;
+        }
+
+        /* Desktop-only close button (top-right, absolute) */
+        .desktop-only {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+        }
+        
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 5rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-content a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-content a:hover {
+            opacity: 0.7;
+        }
+        
+        .models-gallery {
+            width: 100%;
+            background: #fff;
+            padding: 2rem;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .models-gallery-container {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            position: relative;
+            user-select: none;
+            scrollbar-width: none;
+        }
+
+        .models-gallery-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .models-gallery-container.dragging {
+            scroll-behavior: auto;
+        }
+
+        .model-card {
+            flex: 0 0 30%;
+            min-width: 250px;
+        }
+
+        .model-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .gallery-nav:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .gallery-nav.left {
+            left: 0;
+        }
+
+        .gallery-nav.right {
+            right: 0;
+        }
+        
+        @media (min-width: 769px) {
+            .search-dropdown {
+                width: 300px;
+            }
+            .desktop-model-name {
+                display: block !important;
+                position: absolute;
+                top: 2rem;      /* mutat sus */
+                left: 2rem;     /* stânga sus */
+                font-size: 1rem;
+                z-index: 301;   /* deasupra conținutului */
+            }
+            .fullscreen-header {
+                display: none;
+            }
+            .desktop-only {
+                display: inline-block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-model-name {
+                display: none !important;
+            }
+            header h1 {
+                font-size: 1.2rem;
+            }
+            .nav-buttons {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: flex;
+            }
+            .mobile-controls {
+                display: flex;
+            }
+            .nav-arrow {
+                display: none;
+            }
+            .footer-content {
+                gap: 1.5rem;
+                font-size: 0.8rem;
+            }
+            .hero-container {
+                margin-bottom: 5rem;
+            }
+            
+            /* Reduce text size on mobile */
+            .models-gallery-text {
+                padding: 1rem 0.5rem;
+            }
+            
+            .models-gallery-text a {
+                font-size: 0.65rem;
+                margin: 0 0.3rem;
+                display: inline-block;
+            }
+            
+            /* Make gallery items full width on mobile - one per row */
+            div[style*="flex: 0 0 calc(20%"] {
+                flex: 0 0 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            /* Move text lower on mobile */
+            .header-subtitle {
+                top: 60%;
+                font-size: 1.2rem;
+            }
+            
+            .category-list {
+                top: 65%;
+                gap: 0.8rem;
+            }
+            
+            .category-item {
+                font-size: 1rem;
+            }
+            
+            /* Show thumbnails on mobile with glass effect */
+            .thumbnail-container {
+                display: flex;
+                position: absolute;
+                top: 4.5rem;
+                left: 1rem;
+                padding: 0.5rem;
+                gap: 0.5rem;
+                z-index: 400;
+                background: rgba(255, 255, 255, 0.3);
+                backdrop-filter: blur(8px);
+                flex-direction: row;
+                flex-wrap: nowrap;
+                border-radius: 8px;
+            }
+
+            .thumbnail {
+                width: 60px;
+                height: 80px;
+                object-fit: cover;
+                opacity: 0.3;
+                filter: blur(2px);
+                border: none;
+                border-radius: 4px;
+                transition: all 0.3s;
+            }
+
+            .thumbnail.active-thumb {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1.05);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .fullscreen-content {
+                padding: 0.5rem 1rem 3rem 1rem;
+                flex-direction: column;
+            }
+
+            .main-image-container {
+                flex-direction: column;
+                padding: 0;
+                overflow: visible;
+                align-items: center;
+                justify-content: flex-start;
+                position: relative;
+                z-index: 200;
+                margin-top: 2rem;
+            }
+
+            .main-fullscreen-image {
+                position: relative;
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 4rem auto 1.5rem auto;
+                z-index: 200;
+            }
+            
+            .fullscreen-header .fullscreen-close {
+                margin-left: auto;
+            }
+            
+            /* Keep leon image same size on mobile */
+            img[alt="Leon Landscape"] {
+                height: auto !important;
+                min-height: 500px;
+                object-fit: cover;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .nav-arrow {
+                display: none;
+            }
+        }
+        
+        /* Hide the desktop-only close button on mobile */
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none;
+            }
+        }
+        
+        /* Ensure desktop shows the desktop-only button */
+        @media (min-width: 769px) {
+            .fullscreen-header {
+                display: none; /* hide mobile header on desktop */
+            }
+            .desktop-only {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <header>
+            <h1><a href="index.html">BP MODELS</a></h1>
+            <div class="nav-buttons">
+                <div style="position: relative;">
+                    <input type="text" class="search-input" placeholder="Search..." id="homeSearchInput">
+                    <div id="searchSuggestions" style="position: absolute; top: 100%; left: 0; background: #000; border: 1px solid #fff; border-top: none; width: 100%; max-height: 200px; overflow-y: auto; display: none; z-index: 1000;"></div>
+                </div>
+                <a href="modele.html" class="btn">Modele</a>
+                <a href="contact.html" class="btn">Contact</a>
+            </div>
+            <div class="mobile-controls">
+                <button class="search-icon-btn" onclick="toggleSearch()">🔎</button>
+                <button class="mobile-menu-btn" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </header>
+        
+        <button class="nav-arrow left" onclick="prevImage()">‹</button>
+        <button class="nav-arrow right" onclick="nextImage()">›</button>
+        
+        <a href="#" class="hero-model-link desktop" onclick="goToRobertSearch(event)">Robert Pattinson</a>
+        <a href="#" class="hero-model-link mobile-only" onclick="goToJordanSearch(event)">Jordan Barrett</a>
+        
+        <div class="header-subtitle">Descopera Modelele</div>
+
+        <div class="category-list">
+            <a href="modele.html" class="category-item" style="text-decoration: none; cursor: pointer;">Modele</a>
+            <span class="category-item" onclick="goToTalentCategory()">Talent</span>
+            <span class="category-item" onclick="goToCreativCategory()">Creativ</span>
+            <span class="category-item" onclick="goToSportiviCategory()">Sportivi</span>
+        </div>
+        
+        <img src="src/poze/jordan1.jpg" alt="Model 1" class="hero-image active mobile-img" data-index="0">
+        <img src="src/poze/jordan.jpg" alt="Model 2" class="hero-image mobile-img" data-index="1">
+        <img src="src/poze/jordan2.jpg" alt="Model 3" class="hero-image mobile-img" data-index="2">
+        
+        <img src="src/poze/robert.jpg" alt="Model 1" class="hero-image active desktop-img" data-index="0">
+        <img src="src/poze/robert1.jpg" alt="Model 2" class="hero-image desktop-img" data-index="1">
+        <img src="src/poze/robert2.jpg" alt="Model 3" class="hero-image desktop-img" data-index="2">
+    </div>
+    
+    <div style="background: #fff; padding: 2rem; text-align: center;" class="models-gallery-text">
+        <a href="#" onclick="localStorage.setItem('searchModel','Tyson Beckford');localStorage.setItem('modelProfile','tysonprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #000; text-decoration: none; margin: 0 1rem; display: inline-block; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Tyson Beckford</a>
+        <a href="#" onclick="localStorage.setItem('searchModel','David Gandy');localStorage.setItem('modelProfile','gandyprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #000; text-decoration: none; margin: 0 1rem; display: inline-block; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">David Gandy</a>
+        <a href="#" onclick="localStorage.setItem('searchModel','Sean O\'Pry');localStorage.setItem('modelProfile','seanprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #000; text-decoration: none; margin: 0 1rem; display: inline-block; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Sean O'Pry</a>
+        <a href="#" onclick="localStorage.setItem('searchModel','Marcus Schenkenberg');localStorage.setItem('modelProfile','marcusprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #000; text-decoration: none; margin: 0 0.2rem 0 1rem; display: inline-block; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Marcus Schenkenberg</a><span style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #000; margin: 0 0.2rem; display: inline-block;"> &amp; </span><a href="#" onclick="localStorage.setItem('searchModel','Stephanie Seymour');localStorage.setItem('modelProfile','stephanieprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #000; text-decoration: none; margin: 0 1rem 0 0.2rem; display: inline-block; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Stephanie Seymour</a>
+    </div>
+    
+    <div style="background: #000; height: 2px; width: 100%;"></div>
+    
+    <div class="models-gallery">
+        <div class="models-gallery-container" id="modelsGallery">
+            <div class="model-card">
+                <img src="src/poze/tyson.jpg" alt="Tyson" onclick="openGalleryFullscreen(this.src)">
+            </div>
+            <div class="model-card">
+                <img src="src/poze/gandy.jpg" alt="Gandy" onclick="openGalleryFullscreen(this.src)">
+            </div>
+            <div class="model-card">
+                <img src="src/poze/sean.jpg" alt="Sean" onclick="openGalleryFullscreen(this.src)">
+            </div>
+            <div class="model-card">
+                <img src="src/poze/marcus.jpg" alt="Marcus" onclick="openGalleryFullscreen(this.src)">
+            </div>
+        </div>
+    </div>
+    
+    <div style="background: #fff; width: 100%; padding: 0; box-sizing: border-box;">
+        <div style="position: relative; display: inline-block; width: 100%;">
+            <img src="src/poze/leon.jpg" alt="Leon Landscape" style="width: 100%; height: auto; display: block; cursor: pointer;" onclick="openGalleryFullscreen(this.src)">
+            <a href="#" onclick="localStorage.setItem('searchModel','Leon Dame');localStorage.setItem('modelProfile','leonprof.jpg');window.location.href='search.html';return false;" style="position: absolute; bottom: 4rem; left: 2rem; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #fff; text-decoration: none; font-weight: bold; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); transition: opacity 0.3s; z-index: 10;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Leon Dame</a>
+        </div>
+    </div>
+    
+    <div style="background: #fff; width: 100%; padding: 2rem; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 1rem;">
+        <div style="flex: 0 0 calc(20% - 1rem); min-width: 200px;">
+            <img src="src/poze/amy.jpg" alt="Amy" style="width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer;" onclick="openGalleryFullscreen(this.src)">
+            <div style="padding: 1rem; text-align: center;">
+                <a href="#" onclick="localStorage.setItem('searchModel','Amy Wesson');localStorage.setItem('modelProfile','amyprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #000; text-decoration: none; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Amy Wesson</a>
+            </div>
+        </div>
+        <div style="flex: 0 0 calc(20% - 1rem); min-width: 200px;">
+            <img src="src/poze/madona.jpg" alt="Madona" style="width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer;" onclick="openGalleryFullscreen(this.src)">
+            <div style="padding: 1rem; text-align: center;">
+                <a href="#" onclick="localStorage.setItem('searchModel','Madonna Louise Ciccone');localStorage.setItem('modelProfile','madonaprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #000; text-decoration: none; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Madonna Louise Ciccone</a>
+            </div>
+        </div>
+        <div style="flex: 0 0 calc(20% - 1rem); min-width: 200px;">
+            <img src="src/poze/christy.jpg" alt="Christy" style="width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer;" onclick="openGalleryFullscreen(this.src)">
+            <div style="padding: 1rem; text-align: center;">
+                <a href="#" onclick="localStorage.setItem('searchModel','Christy Turlington');localStorage.setItem('modelProfile','christyprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #000; text-decoration: none; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Christy Turlington</a>
+            </div>
+        </div>
+        <div style="flex: 0 0 calc(20% - 1rem); min-width: 200px;">
+            <img src="src/poze/stella.jpg" alt="Stella" style="width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer;" onclick="openGalleryFullscreen(this.src)">
+            <div style="padding: 1rem; text-align: center;">
+                <a href="#" onclick="localStorage.setItem('searchModel','Stella Tennant');localStorage.setItem('modelProfile','stellaprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #000; text-decoration: none; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Stella Tennant</a>
+            </div>
+        </div>
+        <div style="flex: 0 0 calc(20% - 1rem); min-width: 200px;">
+            <img src="src/poze/linda.jpg" alt="Linda" style="width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer;" onclick="openGalleryFullscreen(this.src)">
+            <div style="padding: 1rem; text-align: center;">
+                <a href="#" onclick="localStorage.setItem('searchModel','Linda Evangelista');localStorage.setItem('modelProfile','lindaprof.jpg');window.location.href='search.html';return false;" style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #000; text-decoration: none; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Linda Evangelista</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <a href="about.html">Despre noi</a>
+            <a href="contact.html">Contact</a>
+            <a href="terms.html">Termeni de utilizare</a>
+            <a href="cookies.html">Politica cookie-uri</a>
+            <a href="https://www.instagram.com/1_bote/" target="_blank">Instagram</a>
+        </div>
+    </footer>
+    
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <h2>BP MODELS</h2>
+            <button class="close-btn" onclick="toggleMenu()">×</button>
+        </div>
+        <div class="mobile-menu-links">
+            <input type="text" placeholder="Search...">
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+    
+    <div class="search-dropdown" id="searchDropdown">
+        <div class="search-dropdown-header">
+            <button class="close-btn" onclick="toggleSearch()">[ CLOSE ]</button>
+        </div>
+        <div style="position: relative; padding: 1rem;">
+            <input type="text" placeholder="Search..." class="search-input" id="mobileSearchInput">
+            <div id="mobileSearchSuggestions" style="position: absolute; top: 100%; left: 1rem; right: 1rem; background: #000; border: 1px solid #fff; border-top: none; max-height: 200px; overflow-y: auto; display: none; z-index: 1000;"></div>
+        </div>
+    </div>
+    
+    <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <button class="fullscreen-close desktop-only" onclick="closeFullscreen()">[ CLOSE ]</button>
+        <a href="#" class="model-name desktop-model-name" id="desktopModelName" style="display: none;">Robert Pattinson</a>
+        <div class="fullscreen-header" id="fullscreenHeader">
+            <a href="#" class="model-name" id="modelName">Jordan Barrett</a>
+            <button class="fullscreen-close" onclick="closeFullscreen()">[ CLOSE ]</button>
+        </div>
+        <div class="fullscreen-content" id="fullscreenContent">
+            <div class="thumbnail-container" id="thumbnailContainer"></div>
+            <div class="main-image-container">
+                <div class="image-nav-area left" onclick="prevFullscreenImage()"></div>
+                <img src="" alt="Fullscreen Image" class="main-fullscreen-image" id="mainFullscreenImage">
+                <div class="image-nav-area right" onclick="nextFullscreenImage()"></div>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-content">
+                <a href="about.html">Despre noi</a>
+                <a href="contact.html">Contact</a>
+                <a href="terms.html">Termeni de utilizare</a>
+                <a href="cookies.html">Politica cookie-uri</a>
+                <a href="https://www.instagram.com/1_bote/" target="_blank">Instagram</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Modele din pagina modele.html
+        // modelProfiles definit deja, eliminat duplicatul
+
+        function selectModel(modelName) {
+            localStorage.setItem('searchModel', modelName);
+            localStorage.setItem('modelProfile', modelProfiles[modelName]);
+            window.location.href = 'search.html';
+        }
+
+        // Search desktop
+            (function() {
+                const searchInput = document.getElementById('homeSearchInput');
+                const searchSuggestionsDiv = document.getElementById('searchSuggestions');
+                if (!searchInput || !searchSuggestionsDiv) return;
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm.length === 0) {
+                        searchSuggestionsDiv.style.display = 'none';
+                        searchSuggestionsDiv.innerHTML = '';
+                        return;
+                    }
+                    const matches = Object.keys(modelProfiles).filter(name => {
+                        return name.toLowerCase().includes(searchTerm);
+                    });
+                    if (matches.length > 0) {
+                        searchSuggestionsDiv.innerHTML = matches.map(name => {
+                            const isExactMatch = name.toLowerCase() === searchTerm;
+                            const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                            const safeName = name.replace(/'/g, "\\'");
+                            return `<div style="padding: 0.5rem 1rem; color: #fff; cursor: pointer; border-bottom: 1px solid #333; font-size: 0.85rem; ${style}" data-model="${safeName}">${name}</div>`;
+                        }).join('');
+                        searchSuggestionsDiv.style.display = 'block';
+                    } else {
+                        searchSuggestionsDiv.style.display = 'none';
+                        searchSuggestionsDiv.innerHTML = '';
+                    }
+                });
+                searchSuggestionsDiv.addEventListener('click', function(e) {
+                    if (e.target && e.target.dataset && e.target.dataset.model) {
+                        // Găsește numele original din modelProfiles care corespunde cu data-model (fără escape)
+                        const safeModel = e.target.dataset.model;
+                        const modelName = Object.keys(modelProfiles).find(name => name.replace(/'/g, "\\'") === safeModel) || safeModel;
+                        selectModel(modelName);
+                    }
+                });
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const searchTerm = this.value.trim().toLowerCase();
+                        const modelList = Object.keys(modelProfiles);
+                        for (let modelName of modelList) {
+                            if (modelName.toLowerCase() === searchTerm) {
+                                selectModel(modelName);
+                                return;
+                            }
+                        }
+                    }
+                });
+            })();
+
+        // Search mobile
+            (function() {
+                const mobileSearchInput = document.getElementById('mobileSearchInput');
+                const mobileSearchSuggestionsDiv = document.getElementById('mobileSearchSuggestions');
+                if (!mobileSearchInput || !mobileSearchSuggestionsDiv) return;
+                mobileSearchInput.addEventListener('input', function(e) {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm.length === 0) {
+                        mobileSearchSuggestionsDiv.style.display = 'none';
+                        mobileSearchSuggestionsDiv.innerHTML = '';
+                        return;
+                    }
+                    const matches = Object.keys(modelProfiles).filter(name => {
+                        return name.toLowerCase().includes(searchTerm);
+                    });
+                    if (matches.length > 0) {
+                        mobileSearchSuggestionsDiv.innerHTML = matches.map(name => {
+                            const isExactMatch = name.toLowerCase() === searchTerm;
+                            const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                            const safeName = name.replace(/'/g, "\\'");
+                            return `<div style="padding: 0.5rem 1rem; color: #fff; cursor: pointer; border-bottom: 1px solid #333; font-size: 0.85rem; ${style}" data-model="${safeName}">${name}</div>`;
+                        }).join('');
+                        mobileSearchSuggestionsDiv.style.display = 'block';
+                    } else {
+                        mobileSearchSuggestionsDiv.style.display = 'none';
+                        mobileSearchSuggestionsDiv.innerHTML = '';
+                    }
+                });
+                mobileSearchSuggestionsDiv.addEventListener('click', function(e) {
+                    if (e.target && e.target.dataset && e.target.dataset.model) {
+                        const safeModel = e.target.dataset.model;
+                        const modelName = Object.keys(modelProfiles).find(name => name.replace(/'/g, "\\'") === safeModel) || safeModel;
+                        selectModel(modelName);
+                    }
+                });
+                mobileSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const searchTerm = this.value.trim().toLowerCase();
+                        const modelList = Object.keys(modelProfiles);
+                        for (let modelName of modelList) {
+                            if (modelName.toLowerCase() === searchTerm) {
+                                selectModel(modelName);
+                                return;
+                            }
+                        }
+                    }
+                });
+            })();
+        let currentIndex = 0;
+        let isMobile = window.innerWidth <= 768;
+        let images = [];
+        let fullscreenIndex = 0;
+        let lastScrollTop = 0;
+        let initialIsMobile = false; // Track initial state when fullscreen is opened
+        
+        const desktopImages = [
+            'src/poze/robert.jpg',
+            'src/poze/robert1.jpg',
+            'src/poze/robert2.jpg'
+        ];
+        
+        const mobileImages = [
+            'src/poze/jordan1.jpg',
+            'src/poze/jordan.jpg',
+            'src/poze/jordan2.jpg'
+        ];
+        
+        function updateImages() {
+            isMobile = window.innerWidth <= 768;
+            const imageClass = isMobile ? '.mobile-img' : '.desktop-img';
+            images = document.querySelectorAll(imageClass);
+            
+            // Hide all images
+            document.querySelectorAll('.hero-image').forEach(img => {
+                img.classList.remove('active');
+            });
+            
+            // Show current image
+            if (images[currentIndex]) {
+                images[currentIndex].classList.add('active');
+            }
+        }
+        
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateImages();
+        }
+        
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateImages();
+        }
+        
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+        
+        function toggleSearch() {
+            const searchDropdown = document.getElementById('searchDropdown');
+            searchDropdown.classList.toggle('active');
+        }
+        
+        function handleFullscreenScroll() {
+            if (!initialIsMobile) return;
+            
+            const fullscreenContent = document.getElementById('fullscreenContent');
+            const fullscreenHeader = document.getElementById('fullscreenHeader');
+            const scrollTop = fullscreenContent.scrollTop;
+            
+            if (scrollTop > 50) {
+                fullscreenHeader.classList.add('hidden');
+            } else {
+                fullscreenHeader.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop;
+        }
+        
+        function openFullscreen(index) {
+            const overlay = document.getElementById('fullscreenOverlay');
+            const mainImageContainer = document.querySelector('.main-image-container');
+            const thumbnailContainer = document.getElementById('thumbnailContainer');
+            const fullscreenContent = document.getElementById('fullscreenContent');
+            const fullscreenHeader = document.getElementById('fullscreenHeader');
+            const modelNameElement = document.getElementById('modelName');
+            const desktopModelNameElement = document.getElementById('desktopModelName');
+
+            fullscreenIndex = index;
+            initialIsMobile = window.innerWidth <= 768;
+            const imageArray = initialIsMobile ? mobileImages : desktopImages;
+
+            overlay.classList.remove('desktop-fullscreen', 'mobile-fullscreen');
+            overlay.classList.add(initialIsMobile ? 'mobile-fullscreen' : 'desktop-fullscreen');
+
+            // Update model name based on device
+            if (initialIsMobile) {
+                modelNameElement.textContent = 'Jordan Barrett';
+                desktopModelNameElement.style.display = 'none';
+            } else {
+                desktopModelNameElement.textContent = 'Robert Pattinson';
+                desktopModelNameElement.style.display = 'block';
+            }
+
+            if (initialIsMobile) {
+                // Mobile: single main image + thumbnails with glass effect
+                mainImageContainer.innerHTML = `
+                    <img src="${imageArray[index]}" alt="Fullscreen Image" class="main-fullscreen-image" id="mainFullscreenImage">
+                `;
+                
+                // Add thumbnails on mobile
+                thumbnailContainer.innerHTML = '';
+                imageArray.forEach((imgSrc, i) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgSrc;
+                    thumb.className = 'thumbnail' + (i === index ? ' active-thumb' : '');
+                    thumb.onclick = () => changeFullscreenImage(i);
+                    thumbnailContainer.appendChild(thumb);
+                });
+                
+                fullscreenContent.addEventListener('scroll', handleFullscreenScroll);
+                fullscreenHeader.classList.remove('hidden');
+            } else {
+                // Desktop: main image without navigation areas
+                mainImageContainer.innerHTML = `
+                    <img src="${imageArray[index]}" alt="Fullscreen Image" class="main-fullscreen-image" id="mainFullscreenImage">
+                `;
+                thumbnailContainer.innerHTML = '';
+                imageArray.forEach((imgSrc, i) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgSrc;
+                    thumb.className = 'thumbnail' + (i === index ? ' active-thumb' : '');
+                    thumb.onclick = () => changeFullscreenImage(i);
+                    thumbnailContainer.appendChild(thumb);
+                });
+                fullscreenContent.removeEventListener('scroll', handleFullscreenScroll);
+            }
+
+            overlay.classList.add('active');
+            window.location.hash = `fullscreen-${index}`;
+        }
+
+        function changeFullscreenImage(index) {
+            fullscreenIndex = index;
+            const mainImage = document.getElementById('mainFullscreenImage');
+            const imageArray = initialIsMobile ? mobileImages : desktopImages;
+
+            if (mainImage) {
+                mainImage.src = imageArray[index];
+            }
+
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('active-thumb');
+                } else {
+                    thumb.classList.remove('active-thumb');
+                }
+            });
+
+            window.location.hash = `fullscreen-${index}`;
+            
+            // Don't scroll to top on mobile when changing images
+            if (initialIsMobile) {
+                // Keep scroll position
+                const fullscreenContent = document.getElementById('fullscreenContent');
+                const currentScroll = fullscreenContent.scrollTop;
+                // Maintain current scroll position
+                setTimeout(() => {
+                    fullscreenContent.scrollTop = currentScroll;
+                }, 0);
+            }
+        }
+        
+        function nextFullscreenImage() {
+            const imageArray = initialIsMobile ? mobileImages : desktopImages;
+            fullscreenIndex = (fullscreenIndex + 1) % imageArray.length;
+            changeFullscreenImage(fullscreenIndex);
+        }
+        
+        function prevFullscreenImage() {
+            const imageArray = initialIsMobile ? mobileImages : desktopImages;
+            fullscreenIndex = (fullscreenIndex - 1 + imageArray.length) % imageArray.length;
+            changeFullscreenImage(fullscreenIndex);
+        }
+        
+        // Check URL hash on page load
+        function checkHashOnLoad() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#fullscreen-')) {
+                const index = parseInt(hash.replace('#fullscreen-', ''));
+                if (!isNaN(index)) {
+                    openFullscreen(0); // Always open first image (index 0) on refresh
+                }
+            }
+        }
+        
+        function closeFullscreen() {
+            const overlay = document.getElementById('fullscreenOverlay');
+            const fullscreenContent = document.getElementById('fullscreenContent');
+            
+            overlay.classList.remove('active');
+            
+            // Remove scroll listener
+            fullscreenContent.removeEventListener('scroll', handleFullscreenScroll);
+            
+            // Clear sessionStorage when closing
+            sessionStorage.removeItem('initialIsMobile');
+            sessionStorage.removeItem('fullscreenIndex');
+            
+            // Clear URL hash
+            history.replaceState(null, null, ' ');
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const overlay = document.getElementById('fullscreenOverlay');
+            if (overlay.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') {
+                    prevFullscreenImage();
+                } else if (e.key === 'ArrowRight') {
+                    nextFullscreenImage();
+                } else if (e.key === 'Escape') {
+                    closeFullscreen();
+                }
+            } else {
+                if (e.key === 'ArrowLeft') {
+                    prevImage();
+                } else if (e.key === 'ArrowRight') {
+                    nextImage();
+                }
+            }
+        });
+        
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const menu = document.getElementById('mobileMenu');
+                const searchDropdown = document.getElementById('searchDropdown');
+                menu.classList.remove('active');
+                searchDropdown.classList.remove('active');
+            }
+            
+            // If fullscreen is open, switch name based on INITIAL device (not current)
+            const overlay = document.getElementById('fullscreenOverlay');
+            if (overlay.classList.contains('active')) {
+                const isNowDesktop = window.innerWidth > 768;
+                const desktopModelNameElement = document.getElementById('desktopModelName');
+                const fullscreenHeader = document.getElementById('fullscreenHeader');
+                const modelNameElement = document.getElementById('modelName');
+
+                if (isNowDesktop) {
+                    // If initially opened on mobile, show Jordan Barrett
+                    // If initially opened on desktop, show Robert Pattinson
+                    if (initialIsMobile) {
+                        desktopModelNameElement.textContent = 'Jordan Barrett';
+                    } else {
+                        desktopModelNameElement.textContent = 'Robert Pattinson';
+                    }
+                    desktopModelNameElement.style.display = 'block';
+                    fullscreenHeader.classList.add('hidden');
+                } else {
+                    // Mobile: always show the initial name
+                    desktopModelNameElement.style.display = 'none';
+                    if (initialIsMobile) {
+                        modelNameElement.textContent = 'Jordan Barrett';
+                    } else {
+                        modelNameElement.textContent = 'Robert Pattinson';
+                    }
+                    fullscreenHeader.classList.remove('hidden');
+                }
+                
+                // Save the current state to sessionStorage for refresh persistence
+                sessionStorage.setItem('initialIsMobile', initialIsMobile);
+            }
+
+            updateImages();
+        });
+        
+        // On page load, restore from sessionStorage if available
+        window.addEventListener('load', function() {
+            const savedInitialIsMobile = sessionStorage.getItem('initialIsMobile');
+            
+            if (savedInitialIsMobile !== null && window.location.hash.startsWith('#fullscreen-')) {
+                initialIsMobile = savedInitialIsMobile === 'true';
+            }
+        });
+        
+        // Center the gallery on page load
+        function centerGallery() {
+            const gallery = document.getElementById('modelsGallery');
+            if (gallery) {
+                // Wait for layout to be ready
+                setTimeout(() => {
+                    const container = gallery;
+                    const firstCard = container.querySelector('.model-card:nth-child(2)'); // Gandy (index 1)
+                    const thirdCard = container.querySelector('.model-card:nth-child(3)'); // Sean (index 2)
+                    
+                    if (firstCard && thirdCard) {
+                        const containerWidth = container.offsetWidth;
+                        const firstCardLeft = firstCard.offsetLeft;
+                        const thirdCardRight = thirdCard.offsetLeft + thirdCard.offsetWidth;
+                        
+                        // Calculate scroll to center Gandy and Sean with equal margins
+                        const totalCardsWidth = thirdCardRight - firstCardLeft;
+                        const scrollPosition = firstCardLeft - (containerWidth - totalCardsWidth) / 2;
+                        
+                        container.scrollLeft = scrollPosition;
+                    }
+                }, 100);
+            }
+        }
+        
+        // Initialize
+        updateImages();
+        checkHashOnLoad();
+        
+        // Wait for images to load before centering
+        window.addEventListener('load', function() {
+            centerGallery();
+            
+            const savedInitialIsMobile = sessionStorage.getItem('initialIsMobile');
+            
+            if (savedInitialIsMobile !== null && window.location.hash.startsWith('#fullscreen-')) {
+                initialIsMobile = savedInitialIsMobile === 'true';
+            }
+        });
+        
+        let isDragging = false;
+        let startX = 0;
+        let scrollLeft = 0;
+
+        const gallery = document.getElementById('modelsGallery');
+
+        gallery.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - gallery.offsetLeft;
+            scrollLeft = gallery.scrollLeft;
+            gallery.classList.add('dragging');
+            updateCursor(e);
+            e.preventDefault(); /* Prevent text selection */
+        });
+
+        gallery.addEventListener('mouseleave', () => {
+            isDragging = false;
+            gallery.classList.remove('dragging');
+        });
+
+        gallery.addEventListener('mouseup', () => {
+            isDragging = false;
+            gallery.classList.remove('dragging');
+        });
+
+        gallery.addEventListener('mousemove', (e) => {
+            // Don't update cursor if dragging over image
+            if (!isDragging || !isOverImage(e)) {
+                updateCursor(e);
+            }
+            
+            if (!isDragging) return;
+            
+            const x = e.pageX - gallery.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            gallery.scrollLeft = scrollLeft - walk;
+        });
+
+        function isOverImage(e) {
+            return e.target.tagName === 'IMG';
+        }
+
+        function updateCursor(e) {
+            const gallery = document.getElementById('modelsGallery');
+            const rect = gallery.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const width = rect.width;
+            const threshold = width * 0.5;
+
+            if (x > threshold) {
+                // Right side - arrow pointing right (smaller and thinner)
+                gallery.style.cursor = 'url("data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 80 80%22><text x=%2210%22 y=%2260%22 font-size=%2245%22 font-weight=%22300%22 fill=%22black%22>→</text></svg>") 40 40, auto';
+            } else {
+                // Left side - arrow pointing left (smaller and thinner)
+                gallery.style.cursor = 'url("data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 80 80%22><text x=%2210%22 y=%2260%22 font-size=%2245%22 font-weight=%22300%22 fill=%22black%22>←</text></svg>") 40 40, auto';
+            }
+        }
+
+        function scrollGallery(direction) {
+            const scrollAmount = 350;
+            
+            if (direction === 'left') {
+                gallery.scrollBy({
+                    left: -scrollAmount,
+                    behavior: 'smooth'
+                });
+            } else {
+                gallery.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('homeSearchInput');
+        const searchSuggestionsDiv = document.getElementById('searchSuggestions');
+        
+        const modelProfiles = {
+            'Adrianna Bach': 'adriannaprof.jpg',
+            'Alton Mason': 'altonprof.jpg',
+            'Andres Velencoso': 'andresprof.jpg',
+            'Ari Fournier': 'ariprof.jpg',
+            'Ben Bowers': 'benprof.jpg',
+            'Amy Wesson': 'amyprof.jpg',
+            'Carla Rey': 'carlaprof.jpg',
+            'He Cong': 'heprof.jpg',
+            'Hailey Bieber': 'haileyprof.jpg',
+            'Aleksandar Rusic': 'aleksprof.jpg',
+            'Tyson Beckford': 'tysonprof.jpg',
+            'David Gandy': 'gandyprof.jpg',
+            'Sean O\'Pry': 'seanprof.jpg',
+            'Marcus Schenkenberg': 'marcusprof.jpg',
+            'Miranda Kerr': 'mirindaprof.jpg',
+            'Camila Morrone': 'camilaprof.jpg',
+            'Boo Johnson': 'booprof.jpg',
+            'Elsa Hosk': 'elsaprof.jpg',
+            'Alex Consani': 'alexprof.jpg',
+            'Jordan Barrett': 'jordanprof.jpg',
+            'Leon Dame': 'leonprof.jpg',
+            'Robert Pattinson': 'robertprof.jpg',
+            'Christy Turlington': 'christyprof.jpg',
+            'Stella Tennant': 'stellaprof.jpg'
+            , 'Linda Evangelista': 'lindaprof.jpg'
+            , 'Stephanie Seymour': 'stephanieprof.jpg'
+            , 'Sang Gun': 'sangprof.jpg'
+            , 'TJ Sawyerr': 'tjprof.jpg'
+            , 'Wisdom Kaye': 'wisprof.jpg'
+            , 'Wiz Khalifa': 'wizprof.jpg'
+            , 'Nick Mayhugh': 'nickprof.jpg'
+        };
+
+        // Desktop search
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = this.value.trim().toLowerCase();
+                if (searchTerm.length === 0) {
+                    searchSuggestionsDiv.style.display = 'none';
+                    return;
+                }
+                const matches = Object.keys(modelProfiles).filter(name => {
+                    const nameParts = name.toLowerCase().split(' ');
+                    return nameParts.some(part => part.startsWith(searchTerm));
+                });
+                if (matches.length > 0) {
+                    searchSuggestionsDiv.innerHTML = matches.map(name => {
+                        const isExactMatch = name.toLowerCase() === searchTerm;
+                        const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                        return `<div style="padding: 0.5rem 1rem; color: #fff; cursor: pointer; border-bottom: 1px solid #333; font-size: 0.85rem; ${style}" data-model="${name}">${name}</div>`;
+                    }).join('');
+                    searchSuggestionsDiv.style.display = 'block';
+                } else {
+                    searchSuggestionsDiv.style.display = 'none';
+                }
+            });
+            searchSuggestionsDiv.addEventListener('click', function(e) {
+                if (e.target && e.target.dataset && e.target.dataset.model) {
+                    selectModel(e.target.dataset.model);
+                }
+            });
+
+            // Restore suggestions on focus when there's text
+            searchInput.addEventListener('focus', function() {
+                if (this.value.trim().length > 0) {
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim();
+                    const modelList = Object.keys(modelProfiles);
+                    
+                    for (let modelName of modelList) {
+                        if (modelName.toLowerCase() === searchTerm.toLowerCase()) {
+                            selectModel(modelName);
+                            return;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Mobile search
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const mobileSearchSuggestionsDiv = document.getElementById('mobileSearchSuggestions');
+
+        if (mobileSearchInput) {
+            mobileSearchInput.addEventListener('input', function(e) {
+                const searchTerm = this.value.trim().toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    mobileSearchSuggestionsDiv.style.display = 'none';
+                    return;
+                }
+                
+                // Find matching models - by first letter of any word (first or last name)
+                const matches = Object.keys(modelProfiles).filter(name => {
+                    const nameParts = name.toLowerCase().split(' ');
+                    return nameParts.some(part => part.startsWith(searchTerm));
+                });
+                
+                if (matches.length > 0) {
+                    mobileSearchSuggestionsDiv.innerHTML = matches.map(name => {
+                        const isExactMatch = name.toLowerCase() === searchTerm;
+                        const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                        return `<div style="padding: 0.5rem 1rem; color: #fff; cursor: pointer; border-bottom: 1px solid #333; font-size: 0.85rem; ${style}" onclick="selectModelMobile('${name}')">${name}</div>`;
+                    }).join('');
+                    mobileSearchSuggestionsDiv.style.display = 'block';
+                } else {
+                    mobileSearchSuggestionsDiv.style.display = 'none';
+                }
+            });
+
+            mobileSearchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim();
+                    const modelList = Object.keys(modelProfiles);
+                    
+                    for (let modelName of modelList) {
+                        if (modelName.toLowerCase() === searchTerm.toLowerCase()) {
+                            selectModelMobile(modelName);
+                            return;
+                        }
+                    }
+                }
+            });
+
+            // Restore suggestions on focus when there's text
+            mobileSearchInput.addEventListener('focus', function() {
+                if (this.value.trim().length > 0) {
+                    mobileSearchInput.dispatchEvent(new Event('input'));
+                }
+            });
+        }
+
+        // Hide suggestions when clicking outside search inputs
+        document.addEventListener('click', function(e) {
+            const desktopWrapper = document.getElementById('homeSearchInput');
+            const desktopSug = document.getElementById('searchSuggestions');
+            const mobileWrapper = document.getElementById('mobileSearchInput');
+            const mobileSug = document.getElementById('mobileSearchSuggestions');
+
+            const clickedDesktop = desktopWrapper && (desktopWrapper === e.target || desktopWrapper.contains(e.target));
+            const clickedDesktopSug = desktopSug && desktopSug.contains(e.target);
+            const clickedMobile = mobileWrapper && (mobileWrapper === e.target || mobileWrapper.contains(e.target));
+            const clickedMobileSug = mobileSug && mobileSug.contains(e.target);
+
+            if (desktopSug && !clickedDesktop && !clickedDesktopSug) {
+                desktopSug.style.display = 'none';
+            }
+            if (mobileSug && !clickedMobile && !clickedMobileSug) {
+                mobileSug.style.display = 'none';
+            }
+        });
+
+        function selectModelMobile(modelName) {
+            localStorage.setItem('searchModel', modelName);
+            localStorage.setItem('modelProfile', modelProfiles[modelName]);
+            toggleSearch();
+            window.location.href = 'search.html';
+        }
+
+        function selectModel(modelName) {
+            localStorage.setItem('searchModel', modelName);
+            localStorage.setItem('modelProfile', modelProfiles[modelName]);
+            window.location.href = 'search.html';
+        }
+
+        function goToJordanSearch(event) {
+            event.preventDefault();
+            localStorage.setItem('searchModel', 'Jordan Barrett');
+            localStorage.setItem('modelProfile', modelProfiles['Jordan Barrett']);
+            window.location.href = 'search.html';
+        }
+
+        function goToRobertSearch(event) {
+            event.preventDefault();
+            localStorage.setItem('searchModel', 'Robert Pattinson');
+            localStorage.setItem('modelProfile', modelProfiles['Robert Pattinson']);
+            window.location.href = 'search.html';
+        }
+
+        function goToTalentCategory() {
+            sessionStorage.setItem('navSpecialCategory', 'Talent');
+            window.location.href = 'modele.html';
+        }
+
+        function goToCreativCategory() {
+            sessionStorage.setItem('navSpecialCategory', 'Creativ');
+            window.location.href = 'modele.html';
+        }
+
+        function goToSportiviCategory() {
+            sessionStorage.setItem('navSpecialCategory', 'Sportivi');
+            window.location.href = 'modele.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact - BP MODELS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        header h1 {
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        header h1 a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h1 a:hover {
+            color: #666;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #000;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #000;
+            outline: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .search-input::placeholder {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #000;
+            border: 1px solid #fff;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 0.5rem 0;
+            background: transparent;
+            color: #000;
+            text-decoration: none;
+            border: none;
+            font-weight: normal;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            transition: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #000;
+            transition: width 0.3s;
+        }
+
+        .btn:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: #000;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-controls {
+            display: none;
+            gap: 0.2rem;
+            align-items: center;
+        }
+
+        .search-icon-btn {
+            background: none;
+            border: none;
+            color: #000;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+
+        .page-content {
+            margin-top: 5rem;
+            padding: 2rem;
+            flex: 1;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #000;
+        }
+
+        .contact-info {
+            margin-bottom: 3rem;
+        }
+
+        .contact-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #000;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #666;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            padding: 0.75rem 2rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .submit-btn:hover {
+            background: #333;
+        }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.98);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1.2rem 1.6rem;
+            border-radius: 10px;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+            opacity: 0;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            pointer-events: none;
+            z-index: 200;
+            font-size: 1.05rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(6px);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-content a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-content a:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-controls {
+                display: flex;
+            }
+
+            .page-content {
+                padding: 1rem;
+                margin-top: 4rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .footer-content {
+                gap: 1.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">BP MODELS</a></h1>
+        <div class="nav-buttons">
+            <div style="position: relative;">
+                <input type="text" class="search-input" placeholder="Search..." id="searchInput">
+                <div id="searchSuggestions" class="search-suggestions"></div>
+            </div>
+            <a href="modele.html" class="btn">Modele</a>
+            <a href="contact.html" class="btn">Contact</a>
+        </div>
+        <div class="mobile-controls">
+            <button class="search-icon-btn" onclick="toggleSearch()">🔎</button>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <h1 class="page-title">Contact</h1>
+        
+        <div class="contact-info">
+            <h2>Informații de contact</h2>
+            <p><strong>Email:</strong> contact@bpmodels.ro</p>
+            <p><strong>Telefon:</strong> +40 123 456 789</p>
+            <p><strong>Adresă:</strong> Brasov, România</p>
+        </div>
+
+        <form class="contact-form">
+            <div class="form-group">
+                <label for="name">Nume</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subiect</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Mesaj</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Trimite</button>
+        </form>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <a href="about.html">Despre noi</a>
+            <a href="contact.html">Contact</a>
+            <a href="terms.html">Termeni de utilizare</a>
+            <a href="cookies.html">Politica cookie-uri</a>
+            <a href="https://www.instagram.com/1_bote/" target="_blank">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('.contact-form');
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+
+            const showToast = (message) => {
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4500);
+            };
+
+            if (form) {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    showToast('Mesajul a fost trimis. Îți mulțumim!');
+                    form.reset();
+                });
+            }
+        });
+
+        const modelProfiles = {
+            'Adrianna Bach': 'adriannaprof.jpg',
+            'Alton Mason': 'altonprof.jpg',
+            'Andres Velencoso': 'andresprof.jpg',
+            'Ari Fournier': 'ariprof.jpg',
+            'Ben Bowers': 'benprof.jpg',
+            'Amy Wesson': 'amyprof.jpg',
+            'Madonna Louise Ciccone': 'madonaprof.jpg',
+            'Christy Turlington': 'christyprof.jpg',
+            'Stella Tennant': 'stellaprof.jpg',
+            'Linda Evangelista': 'lindaprof.jpg',
+            'Stephanie Seymour': 'stephanieprof.jpg',
+            'Sang Gun': 'sangprof.jpg',
+            'TJ Sawyerr': 'tjprof.jpg',
+            'Wisdom Kaye': 'wisprof.jpg',
+            'Wiz Khalifa': 'wizprof.jpg',
+            'Nick Mayhugh': 'nickprof.jpg',
+            'Carla Rey': 'carlaprof.jpg',
+            'He Cong': 'heprof.jpg',
+            'Hailey Bieber': 'haileyprof.jpg',
+            'Aleksandar Rusic': 'aleksprof.jpg',
+            'Tyson Beckford': 'tysonprof.jpg',
+            'David Gandy': 'gandyprof.jpg',
+            'Sean O\'Pry': 'seanprof.jpg',
+            'Marcus Schenkenberg': 'marcusprof.jpg',
+            'Miranda Kerr': 'mirindaprof.jpg',
+            'Camila Morrone': 'camilaprof.jpg',
+            'Boo Johnson': 'booprof.jpg',
+            'Elsa Hosk': 'elsaprof.jpg',
+            'Alex Consani': 'alexprof.jpg'
+            , 'Jordan Barrett': 'jordanprof.jpg'
+            , 'Leon Dame': 'leonprof.jpg'
+            , 'Robert Pattinson': 'robertprof.jpg'
+        };
+
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestionsDiv = document.getElementById('searchSuggestions');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = this.value.trim().toLowerCase();
+                if (searchTerm.length === 0) {
+                    searchSuggestionsDiv.style.display = 'none';
+                    return;
+                }
+                const matches = Object.keys(modelProfiles).filter(name => {
+                    const nameParts = name.toLowerCase().split(' ');
+                    return nameParts.some(part => part.startsWith(searchTerm));
+                });
+                if (matches.length > 0) {
+                    searchSuggestionsDiv.innerHTML = matches.map(name => {
+                        const isExactMatch = name.toLowerCase() === searchTerm;
+                        const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                        // Use data-model attribute to store the real name
+                        return `<div style="padding: 0.5rem 1rem; color: #fff; cursor: pointer; border-bottom: 1px solid #333; font-size: 0.85rem; ${style}" data-model="${name}">${name}</div>`;
+                    }).join('');
+                    searchSuggestionsDiv.style.display = 'block';
+                } else {
+                    searchSuggestionsDiv.style.display = 'none';
+                }
+            });
+            // Use event delegation for suggestion clicks
+            searchSuggestionsDiv.addEventListener('click', function(e) {
+                if (e.target && e.target.dataset && e.target.dataset.model) {
+                    selectModel(e.target.dataset.model);
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    const modelList = Object.keys(modelProfiles);
+                    for (let modelName of modelList) {
+                        if (modelName.toLowerCase() === searchTerm) {
+                            selectModel(modelName);
+                            return;
+                        }
+                    }
+                }
+            });
+
+            // Restore suggestions on focus when there's text
+            searchInput.addEventListener('focus', function() {
+                if (this.value.trim().length > 0) {
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+            });
+        }
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            const clickedInput = searchInput && (searchInput === e.target || searchInput.contains(e.target));
+            const clickedSug = searchSuggestionsDiv && searchSuggestionsDiv.contains(e.target);
+            if (searchSuggestionsDiv && !clickedInput && !clickedSug) {
+                searchSuggestionsDiv.style.display = 'none';
+            }
+        });
+
+        function selectModel(modelName) {
+            localStorage.setItem('searchModel', modelName);
+            localStorage.setItem('modelProfile', modelProfiles[modelName]);
+            window.location.href = 'search.html';
+        }
+
+        function toggleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleMenu() {
+            console.log('Menu toggled');
+        }
+    </script>
+</body>
+</html>

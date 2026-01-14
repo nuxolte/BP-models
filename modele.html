@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Modele - BP MODELS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        header h1 {
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        header h1 a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h1 a:hover {
+            color: #666;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #000;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #000;
+            outline: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .search-input::placeholder {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .btn {
+            padding: 0.5rem 0;
+            background: transparent;
+            color: #000;
+            text-decoration: none;
+            border: none;
+            font-weight: normal;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            transition: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #000;
+            transition: width 0.3s;
+        }
+
+        .btn:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: #000;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-controls {
+            display: none;
+            gap: 0.2rem;
+            align-items: center;
+        }
+
+        .search-icon-btn {
+            background: none;
+            border: none;
+            color: #000;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+
+        .page-content {
+            margin-top: 5rem;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 0.3rem;
+            flex-direction: row;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #000;
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 2rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-content a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-content a:hover {
+            opacity: 0.7;
+        }
+
+        .model-button {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            color: #000;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .model-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #000;
+            transition: width 0.3s;
+        }
+
+        .model-button:hover::after {
+            width: 100%;
+        }
+
+        .model-button:hover {
+            color: #000;
+        }
+
+        .model-button.secondary {
+            font-size: 1rem;
+            padding: 0.6rem 1.5rem;
+            font-weight: bold;
+        }
+
+        .model-button.active::after {
+            width: 100%;
+        }
+
+        .filters-section {
+            padding: 0.5rem 2rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            color: #000;
+            padding-top: 1.5rem;
+            width: 100%;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+
+        .filter-options {
+            font-size: 0.9rem;
+        }
+
+        .sort-button {
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            color: #000;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+            padding: 0;
+            font-weight: bold;
+        }
+
+        .sort-button:hover {
+            color: #666;
+        }
+
+        .category-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .category-button {
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            color: #000;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+            padding: 0;
+            font-weight: bold;
+        }
+
+        .category-button:hover {
+            color: #666;
+        }
+
+        .category-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #fff;
+            border: 2px solid #000;
+            margin-top: 0.5rem;
+            z-index: 10;
+            min-width: 100px;
+        }
+
+        .category-options.show {
+            display: block;
+        }
+
+        .category-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            border: none;
+            background: #fff;
+            width: 100%;
+            text-align: left;
+            transition: background 0.3s ease;
+        }
+
+        .category-option:hover {
+            background: #f0f0f0;
+        }
+
+        .filter-reset {
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .filter-reset:hover {
+            color: #666;
+        }
+
+        .featured-model-container {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 0;
+            background: #fff;
+            transition: opacity 0.15s ease;
+            min-height: 600px;
+        }
+
+        .featured-model-wrapper {
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .featured-model-image {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .featured-model-wrapper:hover .featured-model-image {
+            transform: scale(0.98);
+        }
+
+        .featured-model-name {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #000;
+            margin-top: 1rem;
+            transition: opacity 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .featured-model-wrapper:hover .featured-model-name {
+            opacity: 0.3;
+        }
+
+        /* Adrianna Gallery Modal */
+        .adrianna-gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .adrianna-gallery-modal.active {
+            display: flex;
+        }
+
+        /* Featured Model Gallery Modal */
+        .featured-model-gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .featured-model-gallery-modal.active {
+            display: flex;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            max-width: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+            cursor: pointer;
+            pointer-events: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .gallery-nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .gallery-nav-arrow:hover {
+            color: rgba(255, 255, 255, 1);
+            font-size: 5rem;
+        }
+
+        .gallery-nav-arrow.left {
+            left: 2rem;
+        }
+
+        .gallery-nav-arrow.right {
+            right: 2rem;
+        }
+
+        .gallery-close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #fff;
+            color: #000;
+            border: none;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1001;
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-close-btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .gallery-nav-text {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            z-index: 1001;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-controls {
+                display: flex;
+            }
+
+            .page-content {
+                padding: 1rem;
+                margin-top: 4rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .footer-content {
+                gap: 1.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">BP MODELS</a></h1>
+        <div class="nav-buttons">
+            <div style="position: relative;">
+                <input type="text" class="search-input" placeholder="Search..." id="modeleSearchInput">
+                <div id="searchSuggestions" style="position: absolute; top: 100%; left: 0; background: #000; border: 1px solid #fff; border-top: none; width: 100%; max-height: 200px; overflow-y: auto; display: none; z-index: 1000;"></div>
+            </div>
+            <a href="modele.html" class="btn">Modele</a>
+            <a href="contact.html" class="btn">Contact</a>
+        </div>
+        <div class="mobile-controls">
+            <button class="search-icon-btn" onclick="toggleSearch()">🔎</button>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <button class="model-button" style="font-weight: bold;" onclick="showAllModels()">Model</button>
+        <button class="model-button" onclick="selectCategory('Barbati')">Barbati</button>
+        <button class="model-button" onclick="selectCategory('Femei')">Femei</button>
+        <button class="model-button" onclick="selectCategory('Toti')">Toti</button>
+        <div style="width: 3rem;"></div>
+        <button class="model-button secondary" onclick="showTalentModels()">Talent</button>
+        <button class="model-button secondary" onclick="showCreativModels()">Creativ</button>
+        <button class="model-button secondary" onclick="showSportiviModels()">Sportivi</button>
+    </div>
+
+    <div class="filters-section">
+        <span>Categorie:</span>
+        <div class="category-dropdown">
+            <button class="category-button" id="categoryBtn" onclick="toggleCategory()">Toti</button>
+            <div class="category-options" id="categoryOptions">
+                <button class="category-option" onclick="selectCategory('Barbati')">Barbati</button>
+                <button class="category-option" onclick="selectCategory('Femei')">Femei</button>
+            </div>
+        </div>
+        <span class="filter-options">Sortare: <button class="sort-button" id="sortBtn" onclick="toggleSort()">A-Z</button></span>
+        <span class="filter-reset" onclick="resetFilters()">Resetare</span>
+    </div>
+
+    <div class="featured-model-container" style="position: relative;">
+        <div id="loadingOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 100; transition: opacity 0.5s ease; pointer-events: none;"></div>
+        
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Adrianna Bach')">
+            <img src="src/poze/adriannaprof.jpg" alt="Adrianna Bach" class="featured-model-image">
+            <div class="featured-model-name">Adrianna Bach</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Alton Mason')">
+            <img src="src/poze/altonprof.jpg" alt="Alton Mason" class="featured-model-image">
+            <div class="featured-model-name">Alton Mason</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Hailey Bieber')">
+            <img src="src/poze/haileyprof.jpg" alt="Hailey Bieber" class="featured-model-image">
+            <div class="featured-model-name">Hailey Bieber</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'He Cong')">
+            <img src="src/poze/heprof.jpg" alt="He Cong" class="featured-model-image">
+            <div class="featured-model-name">He Cong</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Aleksandar Rusic')">
+            <img src="src/poze/aleksprof.jpg" alt="Aleksandar Rusic" class="featured-model-image">
+            <div class="featured-model-name">Aleksandar Rusic</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Andres Velencoso')">
+            <img src="src/poze/andresprof.jpg" alt="Andres Velencoso" class="featured-model-image">
+            <div class="featured-model-name">Andres Velencoso</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Ari Fournier')">
+            <img src="src/poze/ariprof.jpg" alt="Ari Fournier" class="featured-model-image">
+            <div class="featured-model-name">Ari Fournier</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Ben Bowers')">
+            <img src="src/poze/benprof.jpg" alt="Ben Bowers" class="featured-model-image">
+            <div class="featured-model-name">Ben Bowers</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Carla Rey')">
+            <img src="src/poze/carlaprof.jpg" alt="Carla Rey" class="featured-model-image">
+            <div class="featured-model-name">Carla Rey</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Amy Wesson')">
+            <img src="src/poze/amyprof.jpg" alt="Amy Wesson" class="featured-model-image">
+            <div class="featured-model-name">Amy Wesson</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Jordan Barrett')">
+            <img src="src/poze/jordanprof.jpg" alt="Jordan Barrett" class="featured-model-image">
+            <div class="featured-model-name">Jordan Barrett</div>
+        </a>
+
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Tyson Beckford')">
+            <img src="src/poze/tysonprof.jpg" alt="Tyson Beckford" class="featured-model-image">
+            <div class="featured-model-name">Tyson Beckford</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'David Gandy')">
+            <img src="src/poze/gandyprof.jpg" alt="David Gandy" class="featured-model-image">
+            <div class="featured-model-name">David Gandy</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Sean O\'Pry')">
+            <img src="src/poze/seanprof.jpg" alt="Sean O'Pry" class="featured-model-image">
+            <div class="featured-model-name">Sean O'Pry</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Robert Pattinson')">
+            <img src="src/poze/robertprof.jpg" alt="Robert Pattinson" class="featured-model-image">
+            <div class="featured-model-name">Robert Pattinson</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Leon Dame')">
+            <img src="src/poze/leonprof.jpg" alt="Leon Dame" class="featured-model-image">
+            <div class="featured-model-name">Leon Dame</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Madonna Louise Ciccone')">
+            <img src="src/poze/madonaprof.jpg" alt="Madonna Louise" class="featured-model-image">
+            <div class="featured-model-name">Madonna Louise</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Christy Turlington')">
+            <img src="src/poze/christyprof.jpg" alt="Christy Turlington" class="featured-model-image">
+            <div class="featured-model-name">Christy Turlington</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Stella Tennant')">
+            <img src="src/poze/stellaprof.jpg" alt="Stella Tennant" class="featured-model-image">
+            <div class="featured-model-name">Stella Tennant</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Linda Evangelista')">
+            <img src="src/poze/lindaprof.jpg" alt="Linda Evangelista" class="featured-model-image">
+            <div class="featured-model-name">Linda Evangelista</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Stephanie Seymour')">
+            <img src="src/poze/stephanieprof.jpg" alt="Stephanie Seymour" class="featured-model-image">
+            <div class="featured-model-name">Stephanie Seymour</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Sang Gun')">
+            <img src="src/poze/sangprof.jpg" alt="Sang Gun" class="featured-model-image">
+            <div class="featured-model-name">Sang Gun</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'TJ Sawyerr')">
+            <img src="src/poze/tjprof.jpg" alt="TJ Sawyerr" class="featured-model-image">
+            <div class="featured-model-name">TJ Sawyerr</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Wisdom Kaye')">
+            <img src="src/poze/wisprof.jpg" alt="Wisdom Kaye" class="featured-model-image">
+            <div class="featured-model-name">Wisdom Kaye</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Wiz Khalifa')">
+            <img src="src/poze/wizprof.jpg" alt="Wiz Khalifa" class="featured-model-image">
+            <div class="featured-model-name">Wiz Khalifa</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Nick Mayhugh')">
+            <img src="src/poze/nickprof.jpg" alt="Nick Mayhugh" class="featured-model-image">
+            <div class="featured-model-name">Nick Mayhugh</div>
+        </a>
+        <a href="search.html" class="featured-model-wrapper" onclick="event.preventDefault(); localStorage.setItem('searchModel', 'Marcus Schenkenberg'); localStorage.setItem('modelProfile', 'marcusprof.jpg'); window.location.href='search.html';">
+            <img src="src/poze/marcusprof.jpg" alt="Marcus Schenkenberg" class="featured-model-image">
+            <div class="featured-model-name">Marcus Schenkenberg</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Miranda Kerr')">
+            <img src="src/poze/mirindaprof.jpg" alt="Miranda Kerr" class="featured-model-image">
+            <div class="featured-model-name">Miranda Kerr</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Camila Morrone')">
+            <img src="src/poze/camilaprof.jpg" alt="Camila Morrone" class="featured-model-image">
+            <div class="featured-model-name">Camila Morrone</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Boo Johnson')">
+            <img src="src/poze/booprof.jpg" alt="Boo Johnson" class="featured-model-image">
+            <div class="featured-model-name">Boo Johnson</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Elsa Hosk')">
+            <img src="src/poze/elsaprof.jpg" alt="Elsa Hosk" class="featured-model-image">
+            <div class="featured-model-name">Elsa Hosk</div>
+        </a>
+        <a href="#" class="featured-model-wrapper" onclick="openModelGallery(event, 'Alex Consani')">
+            <img src="src/poze/alexprof.jpg" alt="Alex Consani" class="featured-model-image">
+            <div class="featured-model-name">Alex Consani</div>
+        </a>
+        <div class="featured-model-gallery-modal" id="marcusschenkenbergGalleryModal">
+            <button class="gallery-close-btn" onclick="closeModelGallery('Marcus Schenkenberg')">×</button>
+            <div class="gallery-container" id="marcusschenkenbergGalleryContainer" onclick="handleModelGalleryClick(event, 'Marcus Schenkenberg')">
+                <img src="src/poze/marcusprof.jpg" alt="Marcus Schenkenberg" class="gallery-image" id="marcusschenkenbergGalleryImage" draggable="false">
+                <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Marcus Schenkenberg')">‹</div>
+                <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Marcus Schenkenberg')">›</div>
+            </div>
+            <div class="gallery-nav-text" id="marcusschenkenbergGalleryNavText">Click stânga/dreapta pentru navigare</div>
+        </div>
+        <div class="featured-model-gallery-modal" id="mirandakerrGalleryModal">
+            <button class="gallery-close-btn" onclick="closeModelGallery('Miranda Kerr')">×</button>
+            <div class="gallery-container" id="mirandakerrGalleryContainer" onclick="handleModelGalleryClick(event, 'Miranda Kerr')">
+                <img src="src/poze/mirindaprof.jpg" alt="Miranda Kerr" class="gallery-image" id="mirandakerrGalleryImage" draggable="false">
+                <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Miranda Kerr')">‹</div>
+                <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Miranda Kerr')">›</div>
+            </div>
+            <div class="gallery-nav-text" id="mirandakerrGalleryNavText">Click stânga/dreapta pentru navigare</div>
+        </div>
+        <div class="featured-model-gallery-modal" id="camilamoroneGalleryModal">
+            <button class="gallery-close-btn" onclick="closeModelGallery('Camila Morrone')">×</button>
+            <div class="gallery-container" id="camilamoroneGalleryContainer" onclick="handleModelGalleryClick(event, 'Camila Morrone')">
+                <img src="src/poze/camilaprof.jpg" alt="Camila Morrone" class="gallery-image" id="camilamoroneGalleryImage" draggable="false">
+                <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Camila Morrone')">‹</div>
+                <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Camila Morrone')">›</div>
+            </div>
+            <div class="gallery-nav-text" id="camilamoroneGalleryNavText">Click stânga/dreapta pentru navigare</div>
+        </div>
+        <div class="featured-model-gallery-modal" id="boojohnsonGalleryModal">
+            <button class="gallery-close-btn" onclick="closeModelGallery('Boo Johnson')">×</button>
+            <div class="gallery-container" id="boojohnsonGalleryContainer" onclick="handleModelGalleryClick(event, 'Boo Johnson')">
+                <img src="src/poze/booprof.jpg" alt="Boo Johnson" class="gallery-image" id="boojohnsonGalleryImage" draggable="false">
+                <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Boo Johnson')">‹</div>
+                <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Boo Johnson')">›</div>
+            </div>
+            <div class="gallery-nav-text" id="boojohnsonGalleryNavText">Click stânga/dreapta pentru navigare</div>
+        </div>
+        <div class="featured-model-gallery-modal" id="elsahoskGalleryModal">
+            <button class="gallery-close-btn" onclick="closeModelGallery('Elsa Hosk')">×</button>
+            <div class="gallery-container" id="elsahoskGalleryContainer" onclick="handleModelGalleryClick(event, 'Elsa Hosk')">
+                <img src="src/poze/elsaprof.jpg" alt="Elsa Hosk" class="gallery-image" id="elsahoskGalleryImage" draggable="false">
+                <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Elsa Hosk')">‹</div>
+                <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Elsa Hosk')">›</div>
+            </div>
+            <div class="gallery-nav-text" id="elsahoskGalleryNavText">Click stânga/dreapta pentru navigare</div>
+        </div>
+        <div class="featured-model-gallery-modal" id="alexconsaniGalleryModal">
+            <button class="gallery-close-btn" onclick="closeModelGallery('Alex Consani')">×</button>
+            <div class="gallery-container" id="alexconsaniGalleryContainer" onclick="handleModelGalleryClick(event, 'Alex Consani')">
+                <img src="src/poze/alexprof.jpg" alt="Alex Consani" class="gallery-image" id="alexconsaniGalleryImage" draggable="false">
+                <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Alex Consani')">‹</div>
+                <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Alex Consani')">›</div>
+            </div>
+            <div class="gallery-nav-text" id="alexconsaniGalleryNavText">Click stânga/dreapta pentru navigare</div>
+        </div>
+    </div>
+
+    <div class="adrianna-gallery-modal" id="adriannaGalleryModal">
+        <button class="gallery-close-btn" onclick="closeAdriannaGallery()">×</button>
+        <div class="gallery-container" id="galleryContainer" onclick="handleGalleryClick(event)">
+            <img src="src/poze/adrianna.jpg" alt="Adrianna" class="gallery-image" id="galleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousAdriannaImage(event)">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextAdriannaImage(event)">›</div>
+        </div>
+        <div class="gallery-nav-text" id="galleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="altonmasonGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Alton Mason')">×</button>
+        <div class="gallery-container" id="altonmasonGalleryContainer" onclick="handleModelGalleryClick(event, 'Alton Mason')">
+            <img src="src/poze/alton.jpg" alt="Alton" class="gallery-image" id="altonmasonGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Alton Mason')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Alton Mason')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="altonmasonGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="haileybieberGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Hailey Bieber')">×</button>
+        <div class="gallery-container" id="haileybieberGalleryContainer" onclick="handleModelGalleryClick(event, 'Hailey Bieber')">
+            <img src="src/poze/hailey.jpg" alt="Hailey" class="gallery-image" id="haileybieberGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Hailey Bieber')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Hailey Bieber')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="haileybieberGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="hecongGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('He Cong')">×</button>
+        <div class="gallery-container" id="hecongGalleryContainer" onclick="handleModelGalleryClick(event, 'He Cong')">
+            <img src="src/poze/he.jpg" alt="He Cong" class="gallery-image" id="hecongGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'He Cong')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'He Cong')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="hecongGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="aleksandarrusicGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Aleksandar Rusic')">×</button>
+        <div class="gallery-container" id="aleksandarrusicGalleryContainer" onclick="handleModelGalleryClick(event, 'Aleksandar Rusic')">
+            <img src="src/poze/aleks.jpg" alt="Aleksandar Rusic" class="gallery-image" id="aleksandarrusicGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Aleksandar Rusic')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Aleksandar Rusic')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="aleksandarrusicGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="andresvelencosoGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Andres Velencoso')">×</button>
+        <div class="gallery-container" id="andresvelencosoGalleryContainer" onclick="handleModelGalleryClick(event, 'Andres Velencoso')">
+            <img src="src/poze/andres.jpg" alt="Andres Velencoso" class="gallery-image" id="andresvelencosoGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Andres Velencoso')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Andres Velencoso')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="andresvelencosoGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="arifournierGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Ari Fournier')">×</button>
+        <div class="gallery-container" id="arifournierGalleryContainer" onclick="handleModelGalleryClick(event, 'Ari Fournier')">
+            <img src="src/poze/ari.jpg" alt="Ari Fournier" class="gallery-image" id="arifournierGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Ari Fournier')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Ari Fournier')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="arifournierGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="benbowersGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Ben Bowers')">×</button>
+        <div class="gallery-container" id="benbowersGalleryContainer" onclick="handleModelGalleryClick(event, 'Ben Bowers')">
+            <img src="src/poze/ben.jpg" alt="Ben Bowers" class="gallery-image" id="benbowersGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Ben Bowers')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Ben Bowers')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="benbowersGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="amywessonGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Amy Wesson')">×</button>
+        <div class="gallery-container" id="amywessonGalleryContainer" onclick="handleModelGalleryClick(event, 'Amy Wesson')">
+            <img src="src/poze/amyprof.jpg" alt="Amy Wesson" class="gallery-image" id="amywessonGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Amy Wesson')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Amy Wesson')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="amywessonGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="carlareyGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Carla Rey')">×</button>
+        <div class="gallery-container" id="carlareyGalleryContainer" onclick="handleModelGalleryClick(event, 'Carla Rey')">
+            <img src="src/poze/carla.jpg" alt="Carla Rey" class="gallery-image" id="carlareyGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Carla Rey')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Carla Rey')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="carlareyGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="jordanbarrettGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Jordan Barrett')">×</button>
+        <div class="gallery-container" id="jordanbarrettGalleryContainer" onclick="handleModelGalleryClick(event, 'Jordan Barrett')">
+            <img src="src/poze/jordan.jpg" alt="Jordan Barrett" class="gallery-image" id="jordanbarrettGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Jordan Barrett')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Jordan Barrett')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="jordanbarrettGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <div class="featured-model-gallery-modal" id="robertpattinsonGalleryModal">
+        <button class="gallery-close-btn" onclick="closeModelGallery('Robert Pattinson')">×</button>
+        <div class="gallery-container" id="robertpattinsonGalleryContainer" onclick="handleModelGalleryClick(event, 'Robert Pattinson')">
+            <img src="src/poze/robert1.jpg" alt="Robert Pattinson" class="gallery-image" id="robertpattinsonGalleryImage" draggable="false">
+            <div class="gallery-nav-arrow left" onclick="previousModelImage(event, 'Robert Pattinson')">‹</div>
+            <div class="gallery-nav-arrow right" onclick="nextModelImage(event, 'Robert Pattinson')">›</div>
+        </div>
+        <div class="gallery-nav-text" id="robertpattinsonGalleryNavText">Click stânga/dreapta pentru navigare</div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <a href="about.html">Despre noi</a>
+            <a href="contact.html">Contact</a>
+            <a href="terms.html">Termeni de utilizare</a>
+            <a href="cookies.html">Politica cookie-uri</a>
+            <a href="https://www.instagram.com/1_bote/" target="_blank">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        let currentSort = 'A-Z';
+        let currentCategory = 'Toti';
+        let currentSpecialCategory = null; // Pentru Talent, Creativ, Sportivi
+        let isUpdating = false;
+        let adriannaImages = ['adrianna.jpg', 'adrianna1.jpg', 'adrianna2.jpg', 'adrianna3.jpg', 'adrianna4.jpg'];
+        let currentAdriannaIndex = 0;
+
+        // Array cu galeriile pentru fiecare model
+        const modelGalleries = {
+            'Tyson Beckford': ['tysonprof.jpg','tyson1.jpg','tyson2.jpg','tyson3.jpg','tyson4.jpg','tyson5.jpg','tyson6.jpg','tyson7.jpg'],
+            'Alton Mason': ['alton.jpg', 'alton1.jpg', 'alton2.jpg', 'alton3.jpg', 'alton4.jpg', 'alton5.jpg', 'alton6.jpg', 'alton7.jpg', 'alton8.jpg'],
+            'Hailey Bieber': ['hailey.jpg', 'hailey1.jpg', 'hailey2.jpg', 'hailey3.jpg', 'hailey4.jpg', 'hailey5.jpg', 'hailey6.jpg', 'hailey7.jpg', 'hailey8.jpg', 'hailey9.jpg', 'hailey10.jpg'],
+            'He Cong': ['he.jpg', 'he1.jpg', 'he2.jpg', 'he3.jpg', 'he4.jpg', 'he5.jpg', 'he6.jpg', 'he7.jpg', 'he8.jpg', 'he9.jpg', 'he10.jpg'],
+            'Aleksandar Rusic': ['aleks.jpg', 'aleks1.jpg', 'aleks2.jpg', 'aleks3.jpg', 'aleks4.jpg', 'aleks5.jpg', 'aleks6.jpg', 'aleks7.jpg', 'aleks8.jpg'],
+            'Andres Velencoso': ['andres.jpg', 'andres1.jpg', 'andres2.jpg', 'andres3.jpg', 'andres4.jpg', 'andres5.jpg', 'andres6.jpg', 'andres7.jpg', 'andres8.jpg', 'andres9.jpg', 'andres10.jpg', 'andres11.jpg'],
+            'Ari Fournier': ['ari.jpg', 'ari1.jpg', 'ari2.jpg', 'ari3.jpg', 'ari4.jpg', 'ari5.jpg', 'ari6.jpg', 'ari7.jpg', 'ari8.jpg', 'ari9.jpg', 'ari10.jpg'],
+            'Ben Bowers': ['ben.jpg', 'ben1.jpg', 'ben2.jpg', 'ben3.jpg', 'ben4.jpg', 'ben5.jpg', 'ben6.jpg', 'ben7.jpg', 'ben8.jpg', 'ben9.jpg', 'ben10.jpg'],
+            'Carla Rey': ['carla.jpg', 'carla1.jpg', 'carla2.jpg', 'carla3.jpg', 'carla4.jpg', 'carla5.jpg', 'carla6.jpg', 'carla7.jpg'],
+            'Jordan Barrett': ['jordan.jpg', 'jordan2.jpg', 'jordan3.jpg', 'jordan4.jpg', 'jordan5.jpg', 'jordan6.jpg', 'jordan7.jpg', 'jordan8.jpg', 'jordan9.jpg', 'jordan10.jpg', 'jordan11.jpg'],
+            'Robert Pattinson': ['robert1.jpg', 'robert2.jpg', 'robert3.jpg', 'robert4.jpg', 'robert5.jpg'],
+            'Amy Wesson': ['amyprof.jpg','amy1.jpg','amy2.jpg','amy3.jpg','amy4.jpg','amy5.jpg','amy6.jpg'],
+                'Leon Dame': ['leonprof.jpg'],
+            'Madonna Louise': ['madonaprof.jpg','madona1.jpg','madona2.jpg','madona3.jpg','madona4.jpg','madona5.jpg','madona6.jpg','madona7.jpg'],
+            'Christy Turlington': ['christyprof.jpg','christy1.jpg','christy2.jpg','christy3.jpg','christy4.jpg','christy5.jpg','christy6.jpg'],
+            'Stella Tennant': ['stellaprof.jpg','stella1.jpg','stella2.jpg','stella3.jpg','stella4.jpg','stella5.jpg','stella6.jpg'],
+            'Linda Evangelista': ['lindaprof.jpg','linda1.jpg','linda2.jpg','linda3.jpg','linda4.jpg','linda5.jpg','linda6.jpg','linda7.jpg'],
+            'Stephanie Seymour': ['stephanieprof.jpg','stephanie1.jpg','stephanie2.jpg','stephanie3.jpg','stephanie4.jpg','stephanie5.jpg','stephanie6.jpg'],
+            'Sang Gun': ['sang.jpg','sang1.jpg','sang2.jpg','sang3.jpg','sang4.jpg','sang5.jpg','sang6.jpg','sang7.jpg','sang8.jpg'],
+            'TJ Sawyerr': ['tj.jpg','tj2.jpg','tj3.jpg','tj4.jpg','tj5.jpg','tj6.jpg','tj7.jpg'],
+            'Wisdom Kaye': ['wis.jpg','wis1.jpg','wis2.jpg','wis3.jpg','wis4.jpg','wis5.jpg','wis6.jpg','wis7.jpg','wis8.jpg'],
+            'Wiz Khalifa': ['wiz.jpg','wiz1.jpg','wiz2.jpg','wiz3.jpg','wiz4.jpg','wiz5.jpg','wiz6.jpg','wiz7.jpg'],
+            'Nick Mayhugh': ['nick.jpg','nick1.jpg','nick2.jpg','nick3.jpg','nick4.jpg','nick5.jpg'],
+            'David Gandy': ['gandyprof.jpg','gandy1.jpg','gandy2.jpg','gandy3.jpg','gandy4.jpg','gandy5.jpg','gandy6.jpg','gandy7.jpg'],
+            'Sean O\'Pry': ['seanprof.jpg','sean1.jpg','sean2.jpg','sean3.jpg','sean4.jpg','sean5.jpg','sean6.jpg','sean7.jpg'],
+            'Marcus Schenkenberg': ['marcusprof.jpg','marcus1.jpg','marcus2.jpg','marcus3.jpg','marcus4.jpg','marcus5.jpg','marcus6.jpg'],
+            'Miranda Kerr': ['mirindaprof.jpg','mirinda.jpg','mirinda1.jpg','mirinda2.jpg','mirinda3.jpg','mirinda4.jpg','mirinda5.jpg','mirinda6.jpg','mirinda7.jpg'],
+            'Camila Morrone': ['camilaprof.jpg','camila.jpg','camila1.jpg','camila2.jpg','camila3.jpg','camila4.jpg','camila5.jpg','camila6.jpg','camila7.jpg','camila8.jpg','camila9.jpg'],
+            'Boo Johnson': ['booprof.jpg','boo.jpg','boo1.jpg','boo2.jpg','boo3.jpg','boo4.jpg','boo5.jpg','boo6.jpg','boo7.jpg','boo8.jpg','boo9.jpg'],
+            'Elsa Hosk': ['elsaprof.jpg','elsa.jpg','elsa1.jpg','elsa2.jpg','elsa3.jpg','elsa4.jpg','elsa5.jpg','elsa6.jpg','elsa7.jpg','elsa8.jpg','elsa9.jpg'],
+            'Alex Consani': ['alexprof.jpg','alex.jpg','alex1.jpg','alex2.jpg','alex4.jpg','alex5.jpg','alex6.jpg','alex7.jpg','alex8.jpg','alex9.jpg','alex10.jpg']
+        };
+
+        const currentModelIndex = {};
+        Object.keys(modelGalleries).forEach(model => {
+            currentModelIndex[model] = 0;
+        });
+
+        let dragStartX = 0;
+        let dragEndX = 0;
+
+        // Array cu toți modelele și genul lor
+        const models = [
+            { name: 'Adrianna Bach', gender: 'femeie', image: 'adrianna.jpg' },
+            { name: 'Alton Mason', gender: 'barbat', image: 'alton.jpg' },
+            { name: 'Hailey Bieber', gender: 'femeie', image: 'hailey.jpg' },
+            { name: 'He Cong', gender: 'femeie', image: 'hecong.jpg' },
+            { name: 'Aleksandar Rusic', gender: 'barbat', image: 'aleksandar.jpg' },
+            { name: 'Andres Velencoso', gender: 'barbat', image: 'andres.jpg' },
+            { name: 'Ari Fournier', gender: 'femeie', image: 'ari.jpg' },
+            { name: 'Ben Bowers', gender: 'barbat', image: 'ben.jpg' },
+            { name: 'Carla Rey', gender: 'femeie', image: 'carla.jpg' },
+            { name: 'Amy Wesson', gender: 'femeie', image: 'amyprof.jpg' },
+            { name: 'Madonna Louise', gender: 'femeie', image: 'madonaprof.jpg' },
+            { name: 'Christy Turlington', gender: 'femeie', image: 'christyprof.jpg' },
+            { name: 'Stella Tennant', gender: 'femeie', image: 'stellaprof.jpg' },
+            { name: 'Linda Evangelista', gender: 'femeie', image: 'lindaprof.jpg' },
+            { name: 'Stephanie Seymour', gender: 'femeie', image: 'stephanieprof.jpg' },
+            { name: 'Sang Gun', gender: 'barbat', image: 'sangprof.jpg' },
+            { name: 'TJ Sawyerr', gender: 'barbat', image: 'tjprof.jpg' },
+            { name: 'Wisdom Kaye', gender: 'barbat', image: 'wisprof.jpg' },
+            { name: 'Wiz Khalifa', gender: 'barbat', image: 'wizprof.jpg' },
+            { name: 'Nick Mayhugh', gender: 'barbat', image: 'nickprof.jpg' },
+            { name: 'Jordan Barrett', gender: 'barbat', image: 'jordan.jpg' },
+            { name: 'Tyson Beckford', gender: 'barbat', image: 'tysonprof.jpg' },
+            { name: 'David Gandy', gender: 'barbat', image: 'gandyprof.jpg' },
+            { name: "Sean O'Pry", gender: 'barbat', image: 'seanprof.jpg' },
+            { name: 'Robert Pattinson', gender: 'barbat', image: 'robert1.jpg' },
+            { name: 'Leon Dame', gender: 'barbat', image: 'leonprof.jpg' },
+            { name: 'Marcus Schenkenberg', gender: 'barbat', image: 'marcusprof.jpg' },
+            { name: 'Miranda Kerr', gender: 'femeie', image: 'mirindaprof.jpg' },
+            { name: 'Camila Morrone', gender: 'femeie', image: 'camilaprof.jpg' },
+            { name: 'Boo Johnson', gender: 'barbat', image: 'booprof.jpg' },
+            { name: 'Elsa Hosk', gender: 'femeie', image: 'elsaprof.jpg' },
+            { name: 'Alex Consani', gender: 'femeie', image: 'alexprof.jpg' }
+        ];
+
+        // Previne drag pe imagine
+        document.addEventListener('dragstart', function(event) {
+            if (event.target.classList && event.target.classList.contains('gallery-image')) {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener('dragover', function(event) {
+            if (event.target.classList && event.target.classList.contains('gallery-image')) {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener('drop', function(event) {
+            if (event.target.classList && event.target.classList.contains('gallery-image')) {
+                event.preventDefault();
+            }
+        });
+
+        function filterAndSortModels() {
+            let filtered = models;
+
+            // Filtrare după categorie specială (Talent sau Creativ)
+            if (currentSpecialCategory === 'Talent') {
+                const talentModels = ['Alton Mason', 'Boo Johnson', 'Camila Morrone', 'Elsa Hosk', 'Stephanie Seymour'];
+                filtered = models.filter(m => talentModels.includes(m.name));
+                
+                // Apoi filtrare după sex dacă e selectat
+                if (currentCategory === 'Femei') {
+                    filtered = filtered.filter(m => m.gender === 'femeie');
+                } else if (currentCategory === 'Barbati') {
+                    filtered = filtered.filter(m => m.gender === 'barbat');
+                }
+            } else if (currentSpecialCategory === 'Creativ') {
+                const creativModels = ['Alex Consani', 'Ben Bowers', 'Elsa Hosk', 'Wisdom Kaye', 'Wiz Khalifa'];
+                filtered = models.filter(m => creativModels.includes(m.name));
+                
+                // Apoi filtrare după sex dacă e selectat
+                if (currentCategory === 'Femei') {
+                    filtered = filtered.filter(m => m.gender === 'femeie');
+                } else if (currentCategory === 'Barbati') {
+                    filtered = filtered.filter(m => m.gender === 'barbat');
+                }
+            } else if (currentSpecialCategory === 'Sportivi') {
+                const sportiviModels = ['Nick Mayhugh', 'Boo Johnson'];
+                filtered = models.filter(m => sportiviModels.includes(m.name));
+                
+                // Apoi filtrare după sex dacă e selectat
+                if (currentCategory === 'Femei') {
+                    filtered = filtered.filter(m => m.gender === 'femeie');
+                } else if (currentCategory === 'Barbati') {
+                    filtered = filtered.filter(m => m.gender === 'barbat');
+                }
+            } else {
+                // Filtrare normală după categorie
+                if (currentCategory === 'Femei') {
+                    filtered = models.filter(m => m.gender === 'femeie');
+                } else if (currentCategory === 'Barbati') {
+                    filtered = models.filter(m => m.gender === 'barbat');
+                }
+            }
+
+            // Sortare alfabetică
+            filtered.sort((a, b) => {
+                if (currentSort === 'A-Z') {
+                    return a.name.localeCompare(b.name);
+                } else {
+                    return b.name.localeCompare(a.name);
+                }
+            });
+
+            // Afișează/ascunde modelele din container
+            const container = document.querySelector('.featured-model-container');
+            const allWrappers = container.querySelectorAll('.featured-model-wrapper');
+            
+            // Ascunde containerul temporar pentru update rapid
+            container.style.opacity = '0';
+            
+            // Ascunde toate modelele mai întâi
+            allWrappers.forEach(wrapper => {
+                wrapper.style.display = 'none';
+                wrapper.style.order = '999';
+            });
+            
+            // Afișează doar modelele filtrate în ordinea sortată
+            filtered.forEach((model, index) => {
+                allWrappers.forEach(wrapper => {
+                    const nameDiv = wrapper.querySelector('.featured-model-name');
+                    if (nameDiv && nameDiv.textContent.trim() === model.name) {
+                        wrapper.style.display = 'block';
+                        wrapper.style.order = index;
+                    }
+                });
+            });
+            
+            // Reafișează containerul imediat
+            setTimeout(() => {
+                container.style.opacity = '1';
+            }, 10);
+        }
+
+        function displayModels(modelList) {
+            let modelContainer = document.getElementById('modelsContainer');
+            
+            if (!modelContainer) {
+                // Creează containerul dacă nu există
+                const filters = document.querySelector('.filters-section');
+                modelContainer = document.createElement('div');
+                modelContainer.id = 'modelsContainer';
+                modelContainer.style.cssText = 'width: 100%; padding: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; background: #fff;';
+                filters.parentNode.insertBefore(modelContainer, filters.nextSibling);
+            }
+
+            // Golește containerul
+            modelContainer.innerHTML = '';
+
+            // Adaugă modelele
+            modelList.forEach(model => {
+                const modelCard = document.createElement('div');
+                modelCard.style.cssText = 'flex: 0 0 calc(20% - 1rem); min-width: 200px; text-align: center; cursor: pointer;';
+                modelCard.innerHTML = `
+                    <img src="src/poze/${model.image}" alt="${model.name}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 5px; display: block;">
+                    <div style="padding: 1rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #000;">${model.name}</div>
+                `;
+                modelContainer.appendChild(modelCard);
+            });
+        }
+
+        function handleFeaturedModelClick(event) {
+            event.preventDefault();
+            openAdriannaGallery();
+        }
+
+        function openAdriannaGallery() {
+            const modal = document.getElementById('adriannaGalleryModal');
+            modal.classList.add('active');
+            currentAdriannaIndex = 0;
+            updateAdriannaImage();
+        }
+
+        function closeAdriannaGallery() {
+            const modal = document.getElementById('adriannaGalleryModal');
+            modal.classList.remove('active');
+        }
+
+        function updateAdriannaImage() {
+            const img = document.getElementById('galleryImage');
+            img.src = 'src/poze/' + adriannaImages[currentAdriannaIndex];
+            const navText = document.getElementById('galleryNavText');
+            navText.textContent = `Poza ${currentAdriannaIndex + 1} din ${adriannaImages.length}`;
+        }
+
+        function openModelGallery(event, modelName) {
+            event.preventDefault();
+            // Redirect to search.html with the model
+            const modelProfiles = {
+                'Adrianna Bach': 'adriannaprof.jpg',
+                'Alton Mason': 'altonprof.jpg',
+                'Hailey Bieber': 'haileyprof.jpg',
+                'He Cong': 'heprof.jpg',
+                'Aleksandar Rusic': 'aleksprof.jpg',
+                'Andres Velencoso': 'andresprof.jpg',
+                'Ari Fournier': 'ariprof.jpg',
+                'Ben Bowers': 'benprof.jpg',
+                'Amy Wesson': 'amyprof.jpg',
+                'Madonna Louise Ciccone': 'madonaprof.jpg',
+                'Christy Turlington': 'christyprof.jpg',
+                'Linda Evangelista': 'lindaprof.jpg',
+                'Stella Tennant': 'stellaprof.jpg',
+                'Stephanie Seymour': 'stephanieprof.jpg',
+                'Sang Gun': 'sangprof.jpg',
+                'TJ Sawyerr': 'tjprof.jpg',
+                'Wisdom Kaye': 'wisprof.jpg',
+                'Wiz Khalifa': 'wizprof.jpg',
+                'Nick Mayhugh': 'nickprof.jpg',
+                'Carla Rey': 'carlaprof.jpg',
+                'Jordan Barrett': 'jordanprof.jpg',
+                'Robert Pattinson': 'robertprof.jpg',
+                'Leon Dame': 'leonprof.jpg',
+                'Tyson Beckford': 'tysonprof.jpg',
+                'David Gandy': 'gandyprof.jpg',
+                'Sean O\'Pry': 'seanprof.jpg',
+                'Marcus Schenkenberg': 'marcusprof.jpg',
+                'Miranda Kerr': 'mirindaprof.jpg',
+                'Camila Morrone': 'camilaprof.jpg',
+                'Boo Johnson': 'booprof.jpg',
+                'Elsa Hosk': 'elsaprof.jpg',
+                'Alex Consani': 'alexprof.jpg'
+            };
+            
+            if (modelProfiles[modelName]) {
+                localStorage.setItem('searchModel', modelName);
+                localStorage.setItem('modelProfile', modelProfiles[modelName]);
+                window.location.href = 'search.html';
+            }
+        }
+
+        function closeModelGallery(modelName) {
+            const modal = document.getElementById(modelName.toLowerCase().replace(/\s+/g, '') + 'GalleryModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function updateModelImage(modelName) {
+            const images = modelGalleries[modelName];
+            if (!images) return;
+            const index = currentModelIndex[modelName];
+            const modalId = modelName.toLowerCase().replace(/\s+/g, '') + 'GalleryModal';
+            const imageId = modalId.replace('GalleryModal', 'GalleryImage');
+            const navTextId = modalId.replace('GalleryModal', 'GalleryNavText');
+            
+            const img = document.getElementById(imageId);
+            const navText = document.getElementById(navTextId);
+            
+            if (img) img.src = 'src/poze/' + images[index];
+            if (navText) navText.textContent = `Poza ${index + 1} din ${images.length}`;
+        }
+
+        function handleModelGalleryClick(event, modelName) {
+            const containerId = modelName.toLowerCase().replace(/\s+/g, '') + 'GalleryContainer';
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const rect = container.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const containerWidth = rect.width;
+            const threshold = containerWidth / 2;
+
+            if (clickX > threshold) {
+                nextModelImage(event, modelName);
+            } else {
+                previousModelImage(event, modelName);
+            }
+        }
+
+        function nextModelImage(event, modelName) {
+            if (event) event.stopPropagation();
+            const images = modelGalleries[modelName];
+            if (!images) return;
+            currentModelIndex[modelName] = (currentModelIndex[modelName] + 1) % images.length;
+            updateModelImage(modelName);
+        }
+
+        function previousModelImage(event, modelName) {
+            if (event) event.stopPropagation();
+            const images = modelGalleries[modelName];
+            if (!images) return;
+            currentModelIndex[modelName] = (currentModelIndex[modelName] - 1 + images.length) % images.length;
+            updateModelImage(modelName);
+        }
+
+        function handleGalleryClick(event) {
+            const container = document.getElementById('galleryContainer');
+            const rect = container.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const containerWidth = rect.width;
+            const threshold = containerWidth / 2;
+
+            if (clickX > threshold) {
+                // Click pe dreapta - merge la dreapta (următoarea poza)
+                nextAdriannaImage(event);
+            } else {
+                // Click pe stânga - merge la stânga (poza anterioară)
+                previousAdriannaImage(event);
+            }
+        }
+
+        function nextAdriannaImage(event) {
+            if (event) event.stopPropagation();
+            currentAdriannaIndex = (currentAdriannaIndex + 1) % adriannaImages.length;
+            updateAdriannaImage();
+        }
+
+        function previousAdriannaImage(event) {
+            if (event) event.stopPropagation();
+            currentAdriannaIndex = (currentAdriannaIndex - 1 + adriannaImages.length) % adriannaImages.length;
+            updateAdriannaImage();
+        }
+
+        // Închide galeria cu Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('adriannaGalleryModal');
+                if (modal.classList.contains('active')) {
+                    closeAdriannaGallery();
+                }
+            }
+        });
+
+        function toggleSort() {
+            if (isUpdating) return;
+            
+            const sortBtn = document.getElementById('sortBtn');
+            const overlay = document.getElementById('loadingOverlay');
+            
+            isUpdating = true;
+            
+            // Resetează și afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            if (currentSort === 'A-Z') {
+                currentSort = 'Z-A';
+                sortBtn.textContent = 'Z-A';
+            } else {
+                currentSort = 'A-Z';
+                sortBtn.textContent = 'A-Z';
+            }
+            
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function toggleCategory() {
+            const options = document.getElementById('categoryOptions');
+            options.classList.toggle('show');
+        }
+
+        function showAllModels() {
+            if (isUpdating) return;
+            
+            const overlay = document.getElementById('loadingOverlay');
+            isUpdating = true;
+            
+            // Afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            // Resetează categoria specială
+            currentSpecialCategory = null;
+            currentCategory = 'Toti';
+            currentSort = 'A-Z';
+            
+            const categoryBtn = document.getElementById('categoryBtn');
+            const sortBtn = document.getElementById('sortBtn');
+            categoryBtn.textContent = 'Toti';
+            sortBtn.textContent = 'A-Z';
+            
+            // Elimină clasa active de la toate butoanele secondary
+            document.querySelectorAll('.model-button.secondary').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Update dropdown options
+            const categoryOptions = document.getElementById('categoryOptions');
+            const allCategories = ['Barbati', 'Femei', 'Toti'];
+            const availableCategories = allCategories.filter(cat => cat !== 'Toti');
+            
+            categoryOptions.innerHTML = '';
+            availableCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-option';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                categoryOptions.appendChild(btn);
+            });
+            
+            // Filtrează și sortează modelele
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function showTalentModels() {
+            if (isUpdating) return;
+            
+            const overlay = document.getElementById('loadingOverlay');
+            isUpdating = true;
+            
+            // Afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            // Setează categoria specială
+            currentSpecialCategory = 'Talent';
+            currentCategory = 'Toti'; // Reset la Toti pentru Talent
+            
+            const categoryBtn = document.getElementById('categoryBtn');
+            categoryBtn.textContent = 'Toti';
+            
+            // Adaugă clasa active la butonul Talent și o elimină de pe celelalte
+            document.querySelectorAll('.model-button.secondary').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const talentBtn = Array.from(document.querySelectorAll('.model-button.secondary')).find(btn => btn.textContent === 'Talent');
+            if (talentBtn) {
+                talentBtn.classList.add('active');
+            }
+            
+            // Update dropdown options
+            const categoryOptions = document.getElementById('categoryOptions');
+            const allCategories = ['Barbati', 'Femei', 'Toti'];
+            const availableCategories = allCategories.filter(cat => cat !== 'Toti');
+            
+            categoryOptions.innerHTML = '';
+            availableCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-option';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                categoryOptions.appendChild(btn);
+            });
+            
+            // Filtrează și sortează modelele
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function showCreativModels() {
+            if (isUpdating) return;
+            
+            const overlay = document.getElementById('loadingOverlay');
+            isUpdating = true;
+            
+            // Afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            // Setează categoria specială
+            currentSpecialCategory = 'Creativ';
+            currentCategory = 'Toti'; // Reset la Toti pentru Creativ
+            
+            const categoryBtn = document.getElementById('categoryBtn');
+            categoryBtn.textContent = 'Toti';
+            
+            // Adaugă clasa active la butonul Creativ și o elimină de pe Talent
+            document.querySelectorAll('.model-button.secondary').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const creativBtn = Array.from(document.querySelectorAll('.model-button.secondary')).find(btn => btn.textContent === 'Creativ');
+            if (creativBtn) {
+                creativBtn.classList.add('active');
+            }
+            
+            // Update dropdown options
+            const categoryOptions = document.getElementById('categoryOptions');
+            const allCategories = ['Barbati', 'Femei', 'Toti'];
+            const availableCategories = allCategories.filter(cat => cat !== 'Toti');
+            
+            categoryOptions.innerHTML = '';
+            availableCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-option';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                categoryOptions.appendChild(btn);
+            });
+            
+            // Filtrează și sortează modelele
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function showSportiviModels() {
+            if (isUpdating) return;
+            
+            const overlay = document.getElementById('loadingOverlay');
+            isUpdating = true;
+            
+            // Afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            // Setează categoria specială
+            currentSpecialCategory = 'Sportivi';
+            currentCategory = 'Toti'; // Reset la Toti pentru Sportivi
+            
+            const categoryBtn = document.getElementById('categoryBtn');
+            categoryBtn.textContent = 'Toti';
+            
+            // Adaugă clasa active la butonul Sportivi și o elimină de pe celelalte
+            document.querySelectorAll('.model-button.secondary').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const sportiviBtn = Array.from(document.querySelectorAll('.model-button.secondary')).find(btn => btn.textContent === 'Sportivi');
+            if (sportiviBtn) {
+                sportiviBtn.classList.add('active');
+            }
+            
+            // Update dropdown options
+            const categoryOptions = document.getElementById('categoryOptions');
+            const allCategories = ['Barbati', 'Femei', 'Toti'];
+            const availableCategories = allCategories.filter(cat => cat !== 'Toti');
+            
+            categoryOptions.innerHTML = '';
+            availableCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-option';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                categoryOptions.appendChild(btn);
+            });
+            
+            // Filtrează și sortează modelele
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function selectCategory(category) {
+            if (isUpdating) return;
+            
+            const categoryBtn = document.getElementById('categoryBtn');
+            const categoryOptions = document.getElementById('categoryOptions');
+            const overlay = document.getElementById('loadingOverlay');
+            
+            isUpdating = true;
+            
+            // Resetează și afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            // Dacă selectăm 'Toti' și nu suntem în Talent, Creativ sau Sportivi, resetează special category
+            if (category === 'Toti' && currentSpecialCategory !== 'Talent' && currentSpecialCategory !== 'Creativ' && currentSpecialCategory !== 'Sportivi') {
+                currentSpecialCategory = null;
+                // Elimină clasa active de la toate butoanele secondary
+                document.querySelectorAll('.model-button.secondary').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            }
+            
+            // Update button text
+            currentCategory = category;
+            categoryBtn.textContent = category;
+            
+            // Update dropdown options
+            const allCategories = ['Barbati', 'Femei', 'Toti'];
+            const availableCategories = allCategories.filter(cat => cat !== category);
+            
+            categoryOptions.innerHTML = '';
+            availableCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-option';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                categoryOptions.appendChild(btn);
+            });
+            
+            // Hide dropdown
+            categoryOptions.classList.remove('show');
+            
+            // Filtrează și sortează modelele
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function toggleSearch() {
+            const searchInput = document.querySelector('.search-input');
+            searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function resetFilters() {
+            if (isUpdating) return;
+            
+            const categoryBtn = document.getElementById('categoryBtn');
+            const sortBtn = document.getElementById('sortBtn');
+            const overlay = document.getElementById('loadingOverlay');
+            const categoryOptions = document.getElementById('categoryOptions');
+            
+            isUpdating = true;
+            
+            // Resetează și afișează overlay-ul
+            overlay.style.display = 'block';
+            overlay.style.opacity = '1';
+            
+            // Reset la default - păstrează special category dacă există
+            currentCategory = 'Toti';
+            currentSort = 'A-Z';
+            categoryBtn.textContent = 'Toti';
+            sortBtn.textContent = 'A-Z';
+            
+            // Update dropdown options pentru categoria Toti
+            const allCategories = ['Barbati', 'Femei', 'Toti'];
+            const availableCategories = allCategories.filter(cat => cat !== 'Toti');
+            
+            categoryOptions.innerHTML = '';
+            availableCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-option';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                categoryOptions.appendChild(btn);
+            });
+            
+            // Filtrează și sortează modelele
+            setTimeout(() => {
+                filterAndSortModels();
+                
+                // Ascunde overlay-ul după sortare
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        isUpdating = false;
+                    }, 500);
+                }, 200);
+            }, 50);
+        }
+
+        function toggleMenu() {
+            // Menu toggle functionality
+            console.log('Menu toggled');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.category-dropdown');
+            const options = document.getElementById('categoryOptions');
+            if (dropdown && !dropdown.contains(event.target)) {
+                options.classList.remove('show');
+            }
+        });
+
+        // Inițializează modelele la încărcarea paginii
+        window.addEventListener('load', function() {
+            // Verifică dacă s-a setat o categorie specială din altă pagină
+            const navSpecial = sessionStorage.getItem('navSpecialCategory');
+            if (navSpecial === 'Talent' || navSpecial === 'Creativ' || navSpecial === 'Sportivi') {
+                currentSpecialCategory = navSpecial;
+                currentCategory = 'Toti';
+
+                // Resetează stările butoanelor secundare
+                document.querySelectorAll('.model-button.secondary').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.textContent === navSpecial) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // Setează textul butonului de categorie
+                const categoryBtn = document.getElementById('categoryBtn');
+                if (categoryBtn) categoryBtn.textContent = 'Toti';
+
+                // Actualizează opțiunile dropdown
+                const categoryOptions = document.getElementById('categoryOptions');
+                const allCategories = ['Barbati', 'Femei', 'Toti'];
+                const availableCategories = allCategories.filter(cat => cat !== 'Toti');
+                categoryOptions.innerHTML = '';
+                availableCategories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'category-option';
+                    btn.textContent = cat;
+                    btn.onclick = () => selectCategory(cat);
+                    categoryOptions.appendChild(btn);
+                });
+
+                // Șterge flag-ul după folosire
+                sessionStorage.removeItem('navSpecialCategory');
+            }
+
+            filterAndSortModels();
+            
+            // Așteaptă un moment apoi ascunde overlay-ul
+            setTimeout(() => {
+                const overlay = document.getElementById('loadingOverlay');
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 500);
+            }, 300);
+        });
+
+        // Search functionality for modele page
+        const searchInput = document.getElementById('modeleSearchInput');
+        const searchSuggestionsDiv = document.getElementById('searchSuggestions');
+        
+        const modelProfiles = {
+            'Adrianna Bach': 'adriannaprof.jpg',
+            'Alton Mason': 'altonprof.jpg',
+            'Andres Velencoso': 'andresprof.jpg',
+            'Ari Fournier': 'ariprof.jpg',
+            'Ben Bowers': 'benprof.jpg',
+            'Amy Wesson': 'amyprof.jpg',
+            'Madonna Louise Ciccone': 'madonaprof.jpg',
+            'Christy Turlington': 'christyprof.jpg',
+            'Stella Tennant': 'stellaprof.jpg',
+            'Linda Evangelista': 'lindaprof.jpg',
+            'Stephanie Seymour': 'stephanieprof.jpg',
+            'Sang Gun': 'sangprof.jpg',
+            'TJ Sawyerr': 'tjprof.jpg',
+            'Wisdom Kaye': 'wisprof.jpg',
+            'Wiz Khalifa': 'wizprof.jpg',
+            'Nick Mayhugh': 'nickprof.jpg',
+            'Carla Rey': 'carlaprof.jpg',
+            'He Cong': 'heprof.jpg',
+            'Hailey Bieber': 'haileyprof.jpg',
+            'Aleksandar Rusic': 'aleksprof.jpg',
+            'Jordan Barrett': 'jordanprof.jpg',
+            'Robert Pattinson': 'robertprof.jpg',
+            'Leon Dame': 'leonprof.jpg',
+            'Tyson Beckford': 'tysonprof.jpg',
+            'David Gandy': 'gandyprof.jpg',
+            'Sean O\'Pry': 'seanprof.jpg',
+            'Marcus Schenkenberg': 'marcusprof.jpg',
+            'Miranda Kerr': 'mirindaprof.jpg',
+            'Camila Morrone': 'camilaprof.jpg',
+            'Boo Johnson': 'booprof.jpg',
+            'Elsa Hosk': 'elsaprof.jpg',
+            'Alex Consani': 'alexprof.jpg'
+        };
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = this.value.trim().toLowerCase();
+                if (searchTerm.length === 0) {
+                    searchSuggestionsDiv.style.display = 'none';
+                    return;
+                }
+                const matches = Object.keys(modelProfiles).filter(name => {
+                    const nameParts = name.toLowerCase().split(' ');
+                    return nameParts.some(part => part.startsWith(searchTerm));
+                });
+                if (matches.length > 0) {
+                    searchSuggestionsDiv.innerHTML = matches.map(name => {
+                        const isExactMatch = name.toLowerCase() === searchTerm;
+                        const style = isExactMatch ? 'font-weight: bold; background: #333;' : '';
+                        return `<div style="padding: 0.5rem 1rem; color: #fff; cursor: pointer; border-bottom: 1px solid #333; font-size: 0.85rem; ${style}" data-model="${name}">${name}</div>`;
+                    }).join('');
+                    searchSuggestionsDiv.style.display = 'block';
+                } else {
+                    searchSuggestionsDiv.style.display = 'none';
+                }
+            });
+            // Event delegation pentru click pe sugestii
+            searchSuggestionsDiv.addEventListener('click', function(e) {
+                if (e.target && e.target.dataset && e.target.dataset.model) {
+                    selectModel(e.target.dataset.model);
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim();
+                    const modelList = Object.keys(modelProfiles);
+                    
+                    for (let modelName of modelList) {
+                        if (modelName.toLowerCase() === searchTerm.toLowerCase()) {
+                            selectModel(modelName);
+                            return;
+                        }
+                    }
+                }
+            });
+
+            // Restore suggestions on focus when there's text
+            searchInput.addEventListener('focus', function() {
+                if (this.value.trim().length > 0) {
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+            });
+        }
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            const clickedInput = searchInput && (searchInput === e.target || searchInput.contains(e.target));
+            const clickedSug = searchSuggestionsDiv && searchSuggestionsDiv.contains(e.target);
+            if (searchSuggestionsDiv && !clickedInput && !clickedSug) {
+                searchSuggestionsDiv.style.display = 'none';
+            }
+        });
+
+        function selectModel(modelName) {
+            localStorage.setItem('searchModel', modelName);
+            localStorage.setItem('modelProfile', modelProfiles[modelName]);
+            window.location.href = 'search.html';
+        }
+    </script>
+</body>
+</html>
+
